@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Saved Posts";
+}
+
+<section class="utility-page saved-page">
+    <div class="container">
+        <div class="utility-hero" data-reveal>
+            <span class="eyebrow">Personal space</span>
+            <h1>Saved <em>Posts</em></h1>
+            <p>
+                Bookmark useful updates and guides while browsing CIS Connect.
+                Saved posts stay on this device and browser using local storage.
+            </p>
+        </div>
+
+        <div class="saved-toolbar" data-reveal>
+            <div>
+                <span class="mono" id="savedCount">0 saved posts</span>
+                <p>Use the bookmark icon on post cards or guide pages to save something here.</p>
+            </div>
+            <button class="soft-button danger" type="button" id="clearSavedBtn">Clear saved</button>
+        </div>
+
+        <div class="saved-grid" id="savedGrid" aria-live="polite"></div>
+
+        <div class="empty-state" id="savedEmpty">
+            <svg class="empty-icon-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+            <h2>No saved posts yet</h2>
+            <p>Tap the ♡ on any post or guide to save it here. Saved posts stay on this device.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+                <a class="soft-button" asp-controller="Updates" asp-action="Index">Browse Home</a>
+                <a class="soft-button" asp-controller="Menu" asp-action="PreArrival">Read Guides</a>
+            </div>
+        </div>
+    </div>
+</section>

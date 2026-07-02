@@ -1,0 +1,199 @@
+@model MenuPageViewModel
+
+@{
+    var menuSection = Model.Section!;
+    ViewData["Title"] = menuSection.Name;
+    var articles = Model.Articles.ToList();
+    var shouldGroupByUniversity = menuSection.Slug is "arrival-setup" or "deals-recommendations";
+    var universityFilters = new[]
+    {
+        new { Label = "All", Value = "All" },
+        new { Label = "XMUM", Value = "XMUM" },
+        new { Label = "APU", Value = "APU" },
+        new { Label = "Sunway", Value = "Sunway" },
+        new { Label = "Taylor's", Value = "Taylor's" },
+        new { Label = "UCSI", Value = "UCSI" }
+    };
+    var visualType = menuSection.Slug switch
+    {
+        "pre-arrival" => "travel",
+        "arrival-setup" => "setup",
+        "living-in-malaysia" => "living",
+        "cis-community" => "community",
+        "deals-recommendations" => "deals",
+        _ => "support"
+    };
+    var visualLabel = menuSection.Slug switch
+    {
+        "pre-arrival" => "Visa ready",
+        "arrival-setup" => "First week",
+        "living-in-malaysia" => "Student life",
+        "cis-community" => "Together",
+        "deals-recommendations" => "Local picks",
+        _ => "Support"
+    };
+    var visualSymbol = menuSection.Slug switch
+    {
+        "pre-arrival" => "✈",
+        "arrival-setup" => "⌂",
+        "living-in-malaysia" => "▥",
+        "cis-community" => "✿",
+        "deals-recommendations" => "★",
+        _ => "☎"
+    };
+    var visualImage = menuSection.Slug switch
+    {
+        "living-in-malaysia" => Url.Content("~/images/decorations/malaysia-city-3d.png"),
+        "deals-recommendations" => Url.Content("~/images/nasi-lemak-3d.png"),
+        "cis-community" => Url.Content("~/images/hibiscus-3d.png"),
+        _ => string.Empty
+    };
+}
+
+@* ── Guide Header ────────────────────────────────────────────────────────── *@
+<section class="guide-section" style="padding-top: 120px;">
+    <div class="container">
+        <a href="/" class="eyebrow back-link" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink-500);text-decoration:none;margin-bottom:32px;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0">
+                <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back to home
+        </a>
+        <div class="guide-layout">
+            <div class="guide-main">
+                <div class="guide-header" data-reveal>
+                    <span class="eyebrow" style="display:block;margin-bottom:14px;">Student guide</span>
+                    <h1 class="guide-title word-reveal">@menuSection.Name</h1>
+                    @if (!string.IsNullOrWhiteSpace(menuSection.Description))
+                    {
+                        <p style="font-size:17px;line-height:1.6;color:var(--ink-700);margin-top:24px;max-width:640px;">@menuSection.Description</p>
+                    }
+                </div>
+
+                <aside class="guide-visual guide-visual-@visualType" data-guide-float aria-hidden="true">
+                    <div class="guide-visual-orbit"></div>
+                    <div class="guide-visual-dot one"></div>
+                    <div class="guide-visual-dot two"></div>
+                    <span class="guide-visual-kicker">CIS Connect</span>
+                    @if (!string.IsNullOrWhiteSpace(visualImage))
+                    {
+                        <img class="guide-visual-image" src="@visualImage" alt="" loading="lazy" decoding="async" />
+                    }
+                    else
+                    {
+                        <span class="guide-visual-symbol">@visualSymbol</span>
+                    }
+                    <span class="guide-visual-label">@visualLabel</span>
+                </aside>
+            </div>
+
+        @* ── Article list ─────────────────────────────────────────────────── *@
+        @if (articles.Any())
+        {
+            @if (shouldGroupByUniversity)
+            {
+                <div class="guide-filter-bar" role="group" aria-label="Filter @menuSection.Name by university">
+                    <span class="guide-filter-label">Filter</span>
+                    @foreach (var filter in universityFilters)
+                    {
+                        var count = filter.Value == "All"
+                            ? articles.Count
+                            : articles.Count(article => string.Equals(article.UniversityTag, filter.Value, StringComparison.OrdinalIgnoreCase));
+
+                        <button class="chip guide-filter-chip @(filter.Value == "All" ? "active" : "")"
+                                type="button"
+                                data-guide-filter-chip
+                                data-guide-filter-value="@filter.Value"
+                                aria-pressed="@(filter.Value == "All" ? "true" : "false")">
+                            @filter.Label <span class="count">@count</span>
+                        </button>
+                    }
+                </div>
+            }
+
+            <div class="guide-list" data-guide-filter-list>
+                @for (int i = 0; i < articles.Count; i++)
+                {
+                    var article = articles[i];
+                    var num = (i + 1).ToString("D2");
+                    var tag = string.IsNullOrWhiteSpace(article.UniversityTag) ? "General" : article.UniversityTag.Trim();
+                    <a class="guide-item" asp-controller="Post" asp-action="Details"
+                       asp-route-id="@($"guide-{article.Id}")"
+                       data-guide-university="@tag"
+                       data-save-card
+                       data-save-id="@($"guide-{article.Id}")"
+                       data-save-title="@article.Title"
+                       data-save-summary="@article.Summary"
+                       data-save-category="@menuSection.Name"
+                       data-save-date="@article.CreatedAt.ToString("MMM d, yyyy")"
+                       data-save-url="@Url.Action("Details", "Post", new { id = $"guide-{article.Id}" })"
+                       data-reveal style="text-decoration:none;color:inherit;display:grid;grid-template-columns:56px 1fr auto;gap:24px;align-items:start;">
+
+                        @* number *@
+                        <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:0.08em;color:var(--ink-300);padding-top:4px;user-select:none;">@num</div>
+
+                        @* content *@
+                        <div>
+                            <div class="guide-item-meta" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                <span>@menuSection.Name</span>
+                                @if (!string.IsNullOrWhiteSpace(article.UniversityTag))
+                                {
+                                    <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--hibiscus);background:rgba(194,65,12,0.09);border:1px solid rgba(194,65,12,0.18);padding:1px 7px;border-radius:4px;">@article.UniversityTag</span>
+                                }
+                                else if (shouldGroupByUniversity)
+                                {
+                                    <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-500);background:rgba(10,14,31,0.05);border:1px solid rgba(10,14,31,0.1);padding:1px 7px;border-radius:4px;">All universities</span>
+                                }
+                            </div>
+                            <h2 class="guide-item-title">@article.Title</h2>
+                            @if (!string.IsNullOrWhiteSpace(article.Summary))
+                            {
+                                <p class="guide-item-body">@article.Summary</p>
+                            }
+                        </div>
+
+                        @* arrow *@
+                        <div class="guide-item-actions">
+                            <button class="save-post-btn compact" type="button" data-save-button aria-label="Save guide">♡</button>
+                            <span class="guide-item-arrow">→</span>
+                        </div>
+                    </a>
+                }
+            </div>
+
+            @if (shouldGroupByUniversity)
+            {
+                <div class="guide-empty-filter" data-guide-empty-filter>
+                    <p class="eyebrow">No posts yet</p>
+                    <p>There are no posts for this university yet. Choose another filter or return to All.</p>
+                </div>
+            }
+        }
+        else
+        {
+            <div style="padding:80px 0;text-align:center;color:var(--ink-500);">
+                <p class="eyebrow" style="margin-bottom:12px;">Coming soon</p>
+                <p style="font-size:17px;">Articles for this section are being prepared.</p>
+            </div>
+        }
+        </div>
+
+    </div>
+
+    @* hibiscus motif *@
+    <div class="section-motif right" aria-hidden="true">
+        @{
+            ViewData["HibiscusVariant"] = "stroke";
+            ViewData["HibiscusAnimated"] = false;
+        }
+        @await Html.PartialAsync("_Hibiscus")
+    </div>
+</section>
+
+@* hover arrow style *@
+<style>
+    .guide-item:hover .guide-item-arrow { transform: translateX(6px); color: var(--hibiscus); }
+    .guide-item:hover .guide-item-title { color: var(--hibiscus); }
+    .guide-item { transition: none; }
+    .guide-item-title { transition: color 0.2s; }
+</style>

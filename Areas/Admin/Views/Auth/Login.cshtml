@@ -1,0 +1,84 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Sign in";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in — CIS Connect Admin</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="~/images/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin-body admin-login-body">
+
+<div class="admin-login-wrap">
+
+    <div class="admin-login-card">
+
+        <div class="admin-login-brand">
+            <span class="admin-login-flower" aria-hidden="true">
+                <svg viewBox="-160 -160 320 320">
+                    @for (int r = 0; r < 5; r++) {
+                        <g transform="rotate(@(r * 72)) translate(0 -10)">
+                            <path d="M 0 0 C -36 -28 -44 -78 -22 -118 C -10 -140 10 -140 22 -118 C 44 -78 36 -28 0 0 Z" fill="#c2410c"/>
+                        </g>
+                    }
+                    <circle cx="0" cy="0" r="18" fill="#fdfaf2"/>
+                    <circle cx="0" cy="0" r="8"  fill="#b8841f"/>
+                </svg>
+            </span>
+            <h1>CIS Connect</h1>
+            <p>Admin Panel</p>
+        </div>
+
+        <form method="post" action="/admin/auth/login" novalidate>
+            @Html.AntiForgeryToken()
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="admin-form-error" role="alert">
+                    @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <span>@err.ErrorMessage</span>
+                    }
+                </div>
+            }
+
+            <div class="admin-field">
+                <label class="admin-label" for="username">Email</label>
+                <input class="admin-input" id="username" name="username" type="email"
+                       placeholder="admin@cisconnect.local" autocomplete="username" required />
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" for="password">Password</label>
+                <input class="admin-input" id="password" name="password" type="password"
+                       placeholder="••••••••" autocomplete="current-password" required />
+            </div>
+
+            <label class="admin-checkbox-label">
+                <input type="checkbox" name="rememberMe" value="true" />
+                <span>Stay signed in for 7 days</span>
+            </label>
+
+            <button class="admin-btn admin-btn-primary admin-btn-full" type="submit">
+                Sign in <span class="arrow">→</span>
+            </button>
+        </form>
+
+    </div>
+
+    <p class="admin-login-back">
+        <a href="/">← Back to CIS Connect</a>
+    </p>
+
+</div>
+
+</body>
+</html>

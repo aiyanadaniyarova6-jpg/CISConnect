@@ -1,0 +1,145 @@
+@model SearchViewModel
+
+@{
+    ViewData["Title"] = "Search";
+    var hasQuery = !string.IsNullOrWhiteSpace(Model.Query);
+    var results = Model.Results.ToList();
+
+    var popularSearches = new[] { "visa", "ISAC", "SIM card", "student pass", "accommodation", "EMGS", "bank", "scholarship" };
+}
+
+<section class="utility-page search-page">
+    <div class="container">
+
+        <div class="search-layout" data-reveal>
+            <div class="search-copy">
+                <div class="utility-hero">
+                    <span class="eyebrow">Find faster</span>
+                    <h1>Search CIS <em>Connect</em></h1>
+                    <p>Search home updates, guides, and university information from one calm place.</p>
+                </div>
+
+                <form class="search-panel" id="searchForm" asp-controller="Search" asp-action="Index" method="get">
+                    <svg class="search-panel-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input type="search" name="q" id="searchInput" value="@Model.Query"
+                           placeholder="Search visa, ISAC, embassy, SIM card..."
+                           autofocus autocomplete="off" />
+                    <button class="soft-button" type="submit">Search</button>
+                </form>
+
+                @* popular searches shown when no query *@
+                <div class="search-suggestions" id="searchSuggestions" @(hasQuery ? "style=display:none" : "")>
+                    <span class="mono">Popular searches</span>
+                    <div class="search-chips">
+                        @foreach (var term in popularSearches)
+                        {
+                            <button class="chip" type="button" data-search-suggestion="@term">@term</button>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <aside class="search-art-card" aria-hidden="true">
+                <span class="mono">CIS Connect</span>
+                <div class="search-art-orbit"></div>
+                <div class="search-art-dot one"></div>
+                <div class="search-art-dot two"></div>
+                <div class="search-art-icon">
+                    <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="m16.5 16.5 4 4"/>
+                        <path d="M8 11h6"/>
+                        <path d="M11 8v6"/>
+                    </svg>
+                </div>
+                <strong>Search across guides</strong>
+                <p>Updates, menu articles, campus information, and student support links.</p>
+            </aside>
+        </div>
+
+        <div class="search-results-section">
+            @* live results injected here by JS; hidden until JS fires *@
+            <div id="liveResults" style="display:none;"></div>
+
+            @* server-rendered results (initial load / no-JS fallback) *@
+            <div id="serverResults">
+                @if (hasQuery)
+                {
+                    <div class="search-result-head">
+                        <span class="mono">@Model.TotalCount result@(Model.TotalCount != 1 ? "s" : "")</span>
+                        <p>Showing matches for "@Model.Query"</p>
+                    </div>
+
+                    @if (Model.UniversityResults.Any())
+                    {
+                        <div class="saved-grid search-results">
+                            @foreach (var u in Model.UniversityResults)
+                            {
+                                <article class="saved-card search-card" data-reveal>
+                                    <div>
+                                        <div class="search-card-tags">
+                                            <span class="post-badge">University</span>
+                                            <span class="search-source-tag">@u.Location</span>
+                                        </div>
+                                        <h2>@u.Name</h2>
+                                        <p>@(u.Description.Length > 140 ? u.Description[..137] + "…" : u.Description)</p>
+                                    </div>
+                                    <div class="saved-card-actions">
+                                        <a class="soft-button" asp-controller="Universities" asp-action="Details" asp-route-id="@u.Id">Open</a>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                    }
+
+                    @if (results.Any())
+                    {
+                        <div class="saved-grid search-results">
+                            @foreach (var item in results)
+                            {
+                                <article class="saved-card search-card" data-reveal>
+                                    <div>
+                                        <div class="search-card-tags">
+                                            <span class="post-badge">@item.Category</span>
+                                            <span class="search-source-tag">@item.SourceLabel</span>
+                                        </div>
+                                        <h2>@item.Title</h2>
+                                        <p>@item.Summary</p>
+                                    </div>
+                                    <div class="saved-card-actions">
+                                        <span class="mono">@item.PublishedAt.ToString("dd MMM yyyy")</span>
+                                        <a class="soft-button" asp-controller="Post" asp-action="Details" asp-route-id="@item.PublicId">Open</a>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                    }
+
+                    @if (!results.Any() && !Model.UniversityResults.Any())
+                    {
+                        <div class="empty-state">
+                            <svg class="empty-icon-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                            </svg>
+                            <h2>No results for "@Model.Query"</h2>
+                            <p>Try a shorter keyword: "visa", "arrival", "documents", or "community".</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="empty-state" id="searchEmptyState">
+                        <svg class="empty-icon-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <h2>Start with a keyword</h2>
+                        <p>Try: visa, ISAC, embassy, arrival, scholarship, accommodation.</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</section>

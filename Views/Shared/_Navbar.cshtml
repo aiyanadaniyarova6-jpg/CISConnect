@@ -1,0 +1,147 @@
+@{
+    var ctrl   = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    bool isMenu = ctrl == "Menu";
+    bool isUni  = ctrl == "Universities";
+    bool isHome = ctrl == "Updates";
+    bool isQA   = ctrl == "FAQ";
+    bool isSaved = ctrl == "Saved";
+    bool isChecklist = ctrl == "Checklist";
+    bool isSearch = ctrl == "Search";
+    bool isContact = ctrl == "Contact";
+    bool isMenuGroup = isMenu || isQA || isChecklist;
+}
+
+<nav class="site-nav" id="siteNav" aria-label="Main navigation">
+
+    @* Brand *@
+    <a class="nav-brand" asp-controller="Updates" asp-action="Index" aria-label="CIS Connect home">
+        <span class="nav-brand-mark">
+            <svg viewBox="-160 -160 320 320" aria-hidden="true">
+                @for (int r = 0; r < 5; r++) {
+                    <g transform="rotate(@(r * 72)) translate(0 -10)">
+                        <path d="M 0 0 C -36 -28 -44 -78 -22 -118 C -10 -140 10 -140 22 -118 C 44 -78 36 -28 0 0 Z" fill="#c2410c"/>
+                    </g>
+                }
+                <circle cx="0" cy="0" r="18" fill="#fdfaf2"/>
+                <circle cx="0" cy="0" r="8"  fill="#b8841f"/>
+            </svg>
+        </span>
+        CIS Connect
+    </a>
+
+    @* Centre pill links *@
+    <ul class="nav-pill-links" role="list">
+        <li>
+            <a class="nav-pill-link @(isHome ? "active" : "")"
+               asp-controller="Updates" asp-action="Index">Home</a>
+        </li>
+
+        <li class="nav-dropdown-wrap">
+            <button class="nav-pill-link @(isMenuGroup ? "active" : "")" type="button" aria-haspopup="true" aria-expanded="false" data-dropdown-trigger>
+                Menu
+            </button>
+            <div class="nav-dropdown-menu nav-dropdown-menu-wide" role="menu">
+                <a class="nav-dropdown-item" asp-controller="Menu" asp-action="PreArrival"><span class="nav-item-icon">✈</span><span><strong>Pre-Arrival</strong><small>Visa, documents, checklists</small></span></a>
+                <a class="nav-dropdown-item" asp-controller="Menu" asp-action="ArrivalSetup"><span class="nav-item-icon">⌂</span><span><strong>Arrival &amp; Setup</strong><small>ISAC, SIM, bank, orientation</small></span></a>
+                <a class="nav-dropdown-item" asp-controller="Menu" asp-action="LivingInMalaysia"><span class="nav-item-icon">☼</span><span><strong>Living in Malaysia</strong><small>Food, transport, apps, daily tips</small></span></a>
+                <a class="nav-dropdown-item" asp-controller="Menu" asp-action="CISCommunity"><span class="nav-item-icon">♢</span><span><strong>CIS Community</strong><small>Groups, events, useful links</small></span></a>
+                <a class="nav-dropdown-item" asp-controller="Menu" asp-action="Deals"><span class="nav-item-icon">★</span><span><strong>Deals &amp; Recommendations</strong><small>Places, discounts, reviews</small></span></a>
+                <a class="nav-dropdown-item" asp-controller="Menu" asp-action="Contacts"><span class="nav-item-icon">☎</span><span><strong>Important Contacts</strong><small>Emergency and embassy support</small></span></a>
+                <a class="nav-dropdown-item" asp-controller="Checklist" asp-action="Index"><span class="nav-item-icon">✓</span><span><strong>My Checklist</strong><small>Track your student setup progress</small></span></a>
+                <a class="nav-dropdown-item" asp-controller="FAQ" asp-action="Index"><span class="nav-item-icon">?</span><span><strong>Q&amp;A</strong><small>Search common student questions</small></span></a>
+            </div>
+        </li>
+
+        <li class="nav-dropdown-wrap">
+            <button class="nav-pill-link @(isUni ? "active" : "")" type="button" aria-haspopup="true" aria-expanded="false" data-dropdown-trigger>
+                Universities
+            </button>
+            <div class="nav-dropdown-menu nav-dropdown-menu-unis" role="menu">
+                <a class="nav-dropdown-item nav-uni-item" asp-controller="Universities" asp-action="Details" asp-route-id="1">
+                    <span class="nav-uni-logo"><img src="~/images/logos/XMUM_logo.avif" alt="XMUM logo" /></span>
+                    <span><strong>Xiamen University Malaysia</strong><small>Sepang, Selangor</small></span>
+                </a>
+                <a class="nav-dropdown-item nav-uni-item" asp-controller="Universities" asp-action="Details" asp-route-id="2">
+                    <span class="nav-uni-logo"><img src="~/images/logos/APU_logo.png" alt="APU logo" /></span>
+                    <span><strong>Asia Pacific University</strong><small>Bukit Jalil, Kuala Lumpur</small></span>
+                </a>
+                <a class="nav-dropdown-item nav-uni-item" asp-controller="Universities" asp-action="Details" asp-route-id="3">
+                    <span class="nav-uni-logo"><img src="~/images/logos/Sunway_logo.avif" alt="Sunway University logo" /></span>
+                    <span><strong>Sunway University</strong><small>Bandar Sunway, Selangor</small></span>
+                </a>
+                <a class="nav-dropdown-item nav-uni-item" asp-controller="Universities" asp-action="Details" asp-route-id="4">
+                    <span class="nav-uni-logo"><img src="~/images/logos/Taylors_logo.png" alt="Taylor's University logo" /></span>
+                    <span><strong>Taylor's University</strong><small>Subang Jaya, Selangor</small></span>
+                </a>
+                <a class="nav-dropdown-item nav-uni-item" asp-controller="Universities" asp-action="Details" asp-route-id="5">
+                    <span class="nav-uni-logo"><img src="~/images/logos/UCSI_logo.png" alt="UCSI University logo" /></span>
+                    <span><strong>UCSI University</strong><small>Cheras, Kuala Lumpur</small></span>
+                </a>
+                <a class="nav-dropdown-item all compare" asp-controller="Universities" asp-action="Compare">
+                    Compare Universities →
+                </a>
+                <a class="nav-dropdown-item all" asp-controller="Universities" asp-action="Index">
+                    All Universities →
+                </a>
+            </div>
+        </li>
+    </ul>
+
+    @* Quick actions *@
+    <div class="nav-actions">
+        <a class="nav-icon-link @(isSearch ? "active" : "")" asp-controller="Search" asp-action="Index" aria-label="Search">
+            ⌕
+        </a>
+        <a class="nav-icon-link @(isSaved ? "active" : "")" asp-controller="Saved" asp-action="Index" aria-label="Saved posts">
+            ♡
+        </a>
+        <a class="nav-cta magnet" asp-controller="Menu" asp-action="Contacts" aria-label="Contact">
+            Get help
+            <span class="arrow">↗</span>
+        </a>
+    </div>
+
+    @* Mobile menu button *@
+    <button class="nav-mobile-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileNavDrawer">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    @* Mobile drawer. Kept separate from desktop links so the mobile layout stays simple and reliable. *@
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <a class="mobile-nav-link @(isHome ? "active" : "")" asp-controller="Updates" asp-action="Index">Home</a>
+        <a class="mobile-nav-link @(isSearch ? "active" : "")" asp-controller="Search" asp-action="Index">Search</a>
+        <a class="mobile-nav-link @(isSaved ? "active" : "")" asp-controller="Saved" asp-action="Index">Saved Posts</a>
+
+        <details class="mobile-nav-group" @(isMenuGroup ? "open" : "")>
+            <summary>Menu</summary>
+            <div class="mobile-nav-submenu">
+                <a asp-controller="Menu" asp-action="PreArrival">Pre-Arrival</a>
+                <a asp-controller="Menu" asp-action="ArrivalSetup">Arrival &amp; Setup</a>
+                <a asp-controller="Menu" asp-action="LivingInMalaysia">Living in Malaysia</a>
+                <a asp-controller="Menu" asp-action="CISCommunity">CIS Community</a>
+                <a asp-controller="Menu" asp-action="Deals">Deals &amp; Recommendations</a>
+                <a asp-controller="Menu" asp-action="Contacts">Important Contacts</a>
+                <a asp-controller="Checklist" asp-action="Index">My Checklist</a>
+                <a asp-controller="FAQ" asp-action="Index">Q&amp;A</a>
+            </div>
+        </details>
+
+        <details class="mobile-nav-group" @(isUni ? "open" : "")>
+            <summary>Universities</summary>
+            <div class="mobile-nav-submenu">
+                <a asp-controller="Universities" asp-action="Details" asp-route-id="1">Xiamen University Malaysia</a>
+                <a asp-controller="Universities" asp-action="Details" asp-route-id="2">Asia Pacific University</a>
+                <a asp-controller="Universities" asp-action="Details" asp-route-id="3">Sunway University</a>
+                <a asp-controller="Universities" asp-action="Details" asp-route-id="4">Taylor's University</a>
+                <a asp-controller="Universities" asp-action="Details" asp-route-id="5">UCSI University</a>
+                <a asp-controller="Universities" asp-action="Compare">Compare Universities →</a>
+                <a asp-controller="Universities" asp-action="Index">All Universities →</a>
+            </div>
+        </details>
+        <a class="mobile-nav-cta" asp-controller="Menu" asp-action="Contacts">Get help ↗</a>
+    </div>
+
+</nav>

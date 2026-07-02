@@ -1,0 +1,77 @@
+@model CISConnect.Models.UniversitySection
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow">
+            <a asp-area="Admin" asp-controller="Universities" asp-action="Index">Universities</a> /
+            <a asp-area="Admin" asp-controller="Universities" asp-action="Edit" asp-route-id="@Model.UniversityId">@ViewBag.UniversityName</a> / Add section
+        </span>
+        <h2 class="admin-page-title">Add section</h2>
+    </div>
+</div>
+
+<form action="/admin/universities/add-section/@Model.UniversityId" method="post" class="admin-form">
+    @Html.AntiForgeryToken()
+    <input asp-for="UniversityId" type="hidden" />
+
+    <div class="admin-form-grid">
+        <div class="admin-form-main">
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Title">Title <span class="admin-required">*</span></label>
+                <input class="admin-input" asp-for="Title" placeholder="e.g. Tuition Fees" />
+                <span class="admin-validation" asp-validation-for="Title"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Content">Content</label>
+                <textarea class="admin-input admin-textarea-lg" asp-for="Content" placeholder="Section content…" rows="12"></textarea>
+            </div>
+
+        </div>
+
+        <div class="admin-form-side">
+
+            <div class="admin-panel">
+                <span class="admin-panel-title">Settings</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="SectionType">Section type <span class="admin-required">*</span></label>
+                    <select class="admin-input admin-select" asp-for="SectionType">
+                        <option value="">— select —</option>
+                        @foreach (var t in new[] { "Overview", "Fees", "Housing", "Contacts", "Student Life", "Academic", "Visa", "Other" })
+                        {
+                            <option value="@t">@t</option>
+                        }
+                    </select>
+                    <span class="admin-validation" asp-validation-for="SectionType"></span>
+                </div>
+            </div>
+
+            <div class="admin-panel" style="margin-top: 16px;">
+                <span class="admin-panel-title">Source</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="SourceName">Source name</label>
+                    <input class="admin-input" asp-for="SourceName" />
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="SourceUrl">Source URL</label>
+                    <input class="admin-input" asp-for="SourceUrl" placeholder="https://…" />
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="LastVerifiedAt">Last verified</label>
+                    <input class="admin-input" asp-for="LastVerifiedAt" type="datetime-local" />
+                </div>
+            </div>
+
+            <div class="admin-form-actions">
+                <button class="admin-btn admin-btn-primary" type="submit">Add section</button>
+                <a class="admin-btn admin-btn-ghost" asp-area="Admin" asp-controller="Universities" asp-action="Edit" asp-route-id="@Model.UniversityId">Cancel</a>
+            </div>
+
+        </div>
+    </div>
+</form>

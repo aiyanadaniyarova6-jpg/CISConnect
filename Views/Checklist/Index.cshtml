@@ -1,0 +1,86 @@
+@{
+    ViewData["Title"] = "My Checklist";
+
+    var groups = new[]
+    {
+        new
+        {
+            Name = "Before departure",
+            Items = new[]
+            {
+                "Confirm university offer letter",
+                "Check program accreditation",
+                "Submit student visa documents",
+                "Track EMGS application status",
+                "Prepare printed and digital document copies"
+            }
+        },
+        new
+        {
+            Name = "Arrival week",
+            Items = new[]
+            {
+                "Report to ISAC before immigration",
+                "Meet university representative or arrange transport",
+                "Buy local SIM card",
+                "Check into accommodation",
+                "Attend university orientation"
+            }
+        },
+        new
+        {
+            Name = "Settle in Malaysia",
+            Items = new[]
+            {
+                "Open bank account if required",
+                "Complete health screening if required",
+                "Save embassy and emergency contacts",
+                "Join useful student communities",
+                "Note student pass renewal deadline"
+            }
+        }
+    };
+}
+
+<section class="utility-page checklist-page">
+    <div class="container">
+        <div class="utility-hero" data-reveal>
+            <span class="eyebrow">My student journey</span>
+            <h1>My <em>Checklist</em></h1>
+            <p>
+                Track the important steps from pre-arrival to settling in.
+                Your progress is saved on this device, so you can come back later.
+            </p>
+        </div>
+
+        <div class="checklist-progress-card" data-reveal>
+            <div>
+                <span class="mono">Progress tracker</span>
+                <h2 id="checklistProgressText">0% complete</h2>
+            </div>
+            <div class="progress-rail" aria-hidden="true">
+                <div class="progress-fill" id="checklistProgressFill"></div>
+            </div>
+            <button class="soft-button" type="button" id="resetChecklistBtn">Reset checklist</button>
+        </div>
+
+        <div class="checklist-grid">
+            @foreach (var group in groups)
+            {
+                <article class="checklist-group" data-reveal>
+                    <h2>@group.Name</h2>
+                    <div class="checklist-items">
+                        @foreach (var item in group.Items)
+                        {
+                            var key = item.ToLowerInvariant().Replace(" ", "-").Replace("&", "and");
+                            <label class="checklist-item">
+                                <input type="checkbox" data-checklist-item value="@key" />
+                                <span>@item</span>
+                            </label>
+                        }
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+</section>

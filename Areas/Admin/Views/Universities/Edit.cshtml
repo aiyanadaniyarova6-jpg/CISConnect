@@ -1,0 +1,118 @@
+@model CISConnect.Models.University
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow"><a asp-area="Admin" asp-controller="Universities" asp-action="Index">Universities</a> / Edit</span>
+        <h2 class="admin-page-title">@Model.Name</h2>
+    </div>
+    <form action="/admin/universities/delete" method="post"
+          onsubmit="return confirm('Delete «@Model.Name» and all its sections?')">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="admin-btn admin-btn-danger">Delete</button>
+    </form>
+</div>
+
+<form action="/admin/universities/edit" method="post" class="admin-form">
+    @Html.AntiForgeryToken()
+    <input asp-for="Id" type="hidden" />
+
+    <div class="admin-form-grid">
+        <div class="admin-form-main">
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Name">University name <span class="admin-required">*</span></label>
+                <input class="admin-input" asp-for="Name" />
+                <span class="admin-validation" asp-validation-for="Name"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Location">Location</label>
+                <input class="admin-input" asp-for="Location" />
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Description">Description</label>
+                <textarea class="admin-input admin-textarea-lg" asp-for="Description" rows="10"></textarea>
+            </div>
+
+        </div>
+
+        <div class="admin-form-side">
+
+            <div class="admin-panel">
+                <span class="admin-panel-title">Details</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="CampusMapLink">Campus map URL</label>
+                    <input class="admin-input" asp-for="CampusMapLink" placeholder="https://maps.google.com/…" />
+                </div>
+            </div>
+
+            <div class="admin-form-actions">
+                <button class="admin-btn admin-btn-primary" type="submit">Save changes</button>
+                <a class="admin-btn admin-btn-ghost" asp-area="Admin" asp-controller="Universities" asp-action="Index">Cancel</a>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@* ── Sections ─────────────────────────────────────────────────────────── *@
+<div style="margin-top: 48px;">
+    <div class="admin-page-head" style="margin-bottom: 16px;">
+        <div>
+            <span class="admin-eyebrow">Content tabs</span>
+            <h3 class="admin-page-title" style="font-size: 22px;">Sections <span class="admin-count">@Model.Sections.Count</span></h3>
+        </div>
+        <a class="admin-btn admin-btn-ghost"
+           asp-area="Admin" asp-controller="Universities" asp-action="AddSection"
+           asp-route-universityId="@Model.Id">
+            + Add section
+        </a>
+    </div>
+
+    @if (Model.Sections.Any())
+    {
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Source</th>
+                        <th class="admin-th-actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model.Sections)
+                    {
+                        <tr>
+                            <td class="admin-td-title">
+                                <span class="admin-td-name">@s.Title</span>
+                            </td>
+                            <td><span class="admin-badge">@s.SectionType</span></td>
+                            <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(s.SourceName) ? "—" : s.SourceName)</td>
+                            <td class="admin-td-actions">
+                                <form action="/admin/universities/delete-section" method="post" class="admin-inline-form"
+                                      onsubmit="return confirm('Delete section «@s.Title»?')">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="sectionId" value="@s.Id" />
+                                    <input type="hidden" name="universityId" value="@Model.Id" />
+                                    <button type="submit" class="admin-action-link admin-action-delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="admin-empty">
+            No sections yet.
+            <a asp-area="Admin" asp-controller="Universities" asp-action="AddSection" asp-route-universityId="@Model.Id">Add first section →</a>
+        </div>
+    }
+</div>

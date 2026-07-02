@@ -1,0 +1,161 @@
+@model CISConnect.Models.UpdatePost
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow"><a asp-area="Admin" asp-controller="Posts" asp-action="Index">Posts</a> / New</span>
+        <h2 class="admin-page-title">New post</h2>
+    </div>
+</div>
+
+<form action="/admin/posts/create" method="post" enctype="multipart/form-data" class="admin-form">
+    @Html.AntiForgeryToken()
+    <div class="admin-form-error" asp-validation-summary="ModelOnly"></div>
+
+    <div class="admin-form-grid">
+        <div class="admin-form-main">
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Title">Title <span class="admin-required">*</span></label>
+                <input class="admin-input" asp-for="Title" placeholder="Post title…" />
+                <span class="admin-validation" asp-validation-for="Title"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Summary">Summary</label>
+                <textarea class="admin-input admin-textarea-sm" asp-for="Summary" placeholder="Short description shown in cards…" rows="2"></textarea>
+                <span class="admin-validation" asp-validation-for="Summary"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Content">Content <span class="admin-required">*</span></label>
+                <textarea class="admin-input admin-textarea-lg" asp-for="Content" placeholder="Full post content. Markdown and HTML supported…" rows="14"></textarea>
+                <span class="admin-validation" asp-validation-for="Content"></span>
+            </div>
+
+        </div>
+
+        <div class="admin-form-side">
+
+            <div class="admin-panel">
+                <span class="admin-panel-title">Publish settings</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="Category">Category <span class="admin-required">*</span></label>
+                    <select class="admin-input admin-select" asp-for="Category">
+                        <option value="">— select —</option>
+                        @foreach (var cat in new[] { "Important", "Events", "Guides", "Tips", "Culture", "Community", "Updates" })
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    </select>
+                    <span class="admin-validation" asp-validation-for="Category"></span>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="PublishedAt">Published at</label>
+                    <input class="admin-input" asp-for="PublishedAt" type="datetime-local" />
+                    <span class="admin-validation" asp-validation-for="PublishedAt"></span>
+                </div>
+
+                <label class="admin-checkbox-label">
+                    <input asp-for="IsHighlighted" type="checkbox" />
+                    <span>Highlight this post</span>
+                </label>
+            </div>
+
+            <div class="admin-panel" style="margin-top: 16px;">
+                <span class="admin-panel-title">Media</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="MediaType">Type</label>
+                    <select class="admin-input admin-select" asp-for="MediaType" id="mediaTypeSelect">
+                        <option value="">None</option>
+                        <option value="image">Image</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="video">Video</option>
+                    </select>
+                    <span class="admin-validation" asp-validation-for="MediaType"></span>
+                </div>
+
+                <div class="admin-field" id="imageUploadField" style="display:none;">
+                    <label class="admin-label">Upload image</label>
+                    <input type="file" name="imageFile" accept="image/*" class="admin-input" id="imageFileInput"
+                           style="padding:8px;cursor:pointer;" />
+                    <p class="admin-hint">JPG, PNG, WebP, GIF, AVIF — max 10 MB. Fills URL automatically.</p>
+                    <div id="imagePreviewWrap" style="display:none;margin-top:8px;">
+                        <img id="imagePreview" style="max-width:100%;max-height:180px;border-radius:8px;border:1px solid rgba(10,14,31,0.1);" />
+                    </div>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="MediaUrl">URL</label>
+                    <input class="admin-input" asp-for="MediaUrl" placeholder="https://…" id="mediaUrlInput" />
+                    <span class="admin-validation" asp-validation-for="MediaUrl"></span>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="MediaAltText">Alt text</label>
+                    <input class="admin-input" asp-for="MediaAltText" placeholder="Describe the image…" />
+                    <span class="admin-validation" asp-validation-for="MediaAltText"></span>
+                </div>
+            </div>
+
+            <div class="admin-panel" style="margin-top: 16px;">
+                <span class="admin-panel-title">Source</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="SourceName">Source name</label>
+                    <input class="admin-input" asp-for="SourceName" placeholder="e.g. Official EMGS" />
+                    <span class="admin-validation" asp-validation-for="SourceName"></span>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="SourceUrl">Source URL</label>
+                    <input class="admin-input" asp-for="SourceUrl" placeholder="https://…" />
+                    <span class="admin-validation" asp-validation-for="SourceUrl"></span>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="LastVerifiedAt">Last verified</label>
+                    <input class="admin-input" asp-for="LastVerifiedAt" type="datetime-local" />
+                    <span class="admin-validation" asp-validation-for="LastVerifiedAt"></span>
+                </div>
+            </div>
+
+            <div class="admin-form-actions">
+                <button class="admin-btn admin-btn-primary" type="submit">Publish post</button>
+                <a class="admin-btn admin-btn-ghost" asp-area="Admin" asp-controller="Posts" asp-action="Index">Cancel</a>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+<script>
+(function () {
+    var sel = document.getElementById('mediaTypeSelect');
+    var uploadField = document.getElementById('imageUploadField');
+    var fileInput = document.getElementById('imageFileInput');
+    var preview = document.getElementById('imagePreview');
+    var previewWrap = document.getElementById('imagePreviewWrap');
+
+    function toggleUpload() {
+        uploadField.style.display = sel.value === 'image' ? '' : 'none';
+    }
+    sel.addEventListener('change', toggleUpload);
+    toggleUpload();
+
+    fileInput.addEventListener('change', function () {
+        var file = fileInput.files[0];
+        if (!file) { previewWrap.style.display = 'none'; return; }
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+            previewWrap.style.display = '';
+        };
+        reader.readAsDataURL(file);
+    });
+})();
+</script>
+}

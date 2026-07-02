@@ -1,0 +1,52 @@
+@model IEnumerable<University>
+
+@{
+    ViewData["Title"] = "Universities";
+    var unis = Model.ToList();
+}
+
+<section class="section universities-section">
+    <div class="container">
+
+        @* heading *@
+        <div class="section-head" data-reveal>
+            <span class="eyebrow" style="display:block;margin-bottom:14px;grid-column:1/-1;">Partner campuses</span>
+            <h1 class="section-title">
+                Find your<br/><em>campus</em>
+            </h1>
+            <p class="section-lede">
+                Five partner universities across Malaysia — each with a dedicated
+                guide covering campus maps, useful contacts, food options,
+                facilities, and local student updates.
+            </p>
+            <a class="uni-compare-link" asp-controller="Universities" asp-action="Compare">
+                Compare universities →
+            </a>
+        </div>
+
+        @* editorial list *@
+        <div class="uni-list">
+            @for (int i = 0; i < unis.Count; i++)
+            {
+                var u  = unis[i];
+                var nn = (i + 1).ToString("D2");
+                <a class="uni-row" asp-action="Details" asp-route-id="@u.Id" data-reveal>
+                    <span class="num">@nn</span>
+                    <span class="name">@u.Name</span>
+                    <span class="city">@u.Location</span>
+                    <span class="programs mono">University guide</span>
+                    <span class="arrow" aria-hidden="true">→</span>
+                </a>
+            }
+        </div>
+
+    </div>
+
+    <div class="section-motif right" aria-hidden="true">
+        @{
+            ViewData["HibiscusVariant"] = "stroke";
+            ViewData["HibiscusAnimated"] = false;
+        }
+        @await Html.PartialAsync("_Hibiscus")
+    </div>
+</section>

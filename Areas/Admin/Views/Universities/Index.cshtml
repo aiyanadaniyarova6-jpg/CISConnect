@@ -1,0 +1,49 @@
+@model IEnumerable<CISConnect.Models.University>
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow">Content</span>
+        <h2 class="admin-page-title">Universities <span class="admin-count">@Model.Count()</span></h2>
+    </div>
+    <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Universities" asp-action="Create">
+        + New university
+    </a>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Sections</th>
+                <th class="admin-th-actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td class="admin-td-title">
+                        <span class="admin-td-name">@u.Name</span>
+                    </td>
+                    <td>@u.Location</td>
+                    <td class="admin-td-mono">@u.Sections.Count</td>
+                    <td class="admin-td-actions">
+                        <a class="admin-action-link" asp-area="Admin" asp-controller="Universities" asp-action="Edit" asp-route-id="@u.Id">Edit</a>
+                        <form action="/admin/universities/delete" method="post" class="admin-inline-form"
+                              onsubmit="return confirm('Delete «@u.Name»? All sections will be removed.')">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@u.Id" />
+                            <button type="submit" class="admin-action-link admin-action-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any())
+    {
+        <div class="admin-empty">No universities yet. <a asp-area="Admin" asp-controller="Universities" asp-action="Create">Add one →</a></div>
+    }
+</div>

@@ -1,0 +1,151 @@
+@{
+    ViewData["Title"] = "About";
+}
+
+<section class="utility-page about-page">
+    <div class="container">
+
+        <div class="utility-hero" data-reveal style="position:relative;overflow:visible;">
+            <span class="eyebrow">About the project</span>
+            <h1>CIS <em>Connect</em></h1>
+            <p>
+                A centralized field guide for Central Asian students preparing for,
+                arriving in, and settling into student life in Malaysia.
+            </p>
+
+            @* Decorative spinning hibiscus *@
+            <div style="position:absolute;top:-20px;right:-120px;width:220px;height:220px;pointer-events:none;" aria-hidden="true">
+                <svg viewBox="-160 -160 320 320" class="contact-hibiscus-spin" style="width:100%;height:100%;opacity:0.1;">
+                    @for (int r = 0; r < 5; r++) {
+                        <g transform="rotate(@(r * 72)) translate(0 -10)">
+                            <path d="M 0 0 C -36 -28 -44 -78 -22 -118 C -10 -140 10 -140 22 -118 C 44 -78 36 -28 0 0 Z" fill="#c2410c"/>
+                        </g>
+                    }
+                    <circle cx="0" cy="0" r="18" fill="#fdfaf2"/>
+                    <circle cx="0" cy="0" r="8"  fill="#b8841f"/>
+                </svg>
+            </div>
+        </div>
+
+        @* ── Display Cards — stacked skewed stack ───────────────────── *@
+        <div class="dc-wrap" data-reveal>
+            <div class="dc-grid">
+
+                <div class="dc-card dc-card-1">
+                    <div class="dc-card-top">
+                        <span class="dc-num-badge">01</span>
+                        <span class="dc-title">Who it is for</span>
+                    </div>
+                    <p class="dc-desc">Kazakhstan, Kyrgyzstan, Uzbekistan & beyond</p>
+                    <p class="dc-meta">Audience</p>
+                </div>
+
+                <div class="dc-card dc-card-2">
+                    <div class="dc-card-top">
+                        <span class="dc-num-badge">02</span>
+                        <span class="dc-title">Why it exists</span>
+                    </div>
+                    <p class="dc-desc">One place for scattered student guidance</p>
+                    <p class="dc-meta">Mission</p>
+                </div>
+
+                <div class="dc-card dc-card-3">
+                    <div class="dc-card-top">
+                        <span class="dc-num-badge">03</span>
+                        <span class="dc-title">What it covers</span>
+                    </div>
+                    <p class="dc-desc">Visa, arrival, living, contacts & community</p>
+                    <p class="dc-meta">Content</p>
+                </div>
+
+                <div class="dc-card dc-card-4">
+                    <div class="dc-card-top">
+                        <span class="dc-num-badge">04</span>
+                        <span class="dc-title">How it is built</span>
+                    </div>
+                    <p class="dc-desc">Independent — not affiliated, fully verified</p>
+                    <p class="dc-meta">Platform</p>
+                </div>
+
+            </div>
+        </div>
+
+        @* ── Contact block with scroll-tilt animation ─────────────────── *@
+        <div class="about-tilt-outer" id="aboutTiltOuter">
+            <div class="about-contact about-tilt-card" id="aboutTiltCard">
+
+                <div class="about-contact-header" data-reveal>
+                    <span class="eyebrow">Contact</span>
+                    <h2>Questions or <em>feedback?</em></h2>
+                    <p>
+                        For urgent student issues, refer to the
+                        <a asp-controller="Menu" asp-action="Contacts">Important Contacts</a>
+                        page. For platform feedback — write to us directly.
+                    </p>
+                </div>
+
+                @* ── Form ──────────────────────────────────────────────────── *@
+                @if (TempData["ContactSent"] != null)
+                {
+                    <div class="acf-success" data-reveal>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                        <div>
+                            <strong>Message sent!</strong>
+                            <span>We'll reply to your email as soon as possible.</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @if (TempData["ContactError"] != null)
+                    {
+                        <div class="acf-error" data-reveal>Something went wrong — please try again.</div>
+                    }
+
+                    <form class="acf" asp-controller="Contact" asp-action="Index" method="post" data-reveal style="--d:80ms">
+                        @Html.AntiForgeryToken()
+                        <div class="acf-row">
+                            <div class="acf-field">
+                                <label for="acf-name">Name</label>
+                                <input id="acf-name" name="Name" placeholder="Aiyana" required />
+                            </div>
+                            <div class="acf-field">
+                                <label for="acf-email">Email</label>
+                                <input id="acf-email" name="Email" type="email" placeholder="you@example.com" required />
+                            </div>
+                        </div>
+                        <div class="acf-field">
+                            <label for="acf-subject">Subject</label>
+                            <input id="acf-subject" name="Subject" placeholder="Question about visa process" required />
+                        </div>
+                        <div class="acf-field">
+                            <label for="acf-msg">Message</label>
+                            <textarea id="acf-msg" name="Message" rows="5" placeholder="Write your message here..." required></textarea>
+                        </div>
+                        <div class="acf-footer">
+                            <p class="acf-note">We read every message and respond personally.</p>
+                            <button type="submit" class="acf-btn">Send message ↗</button>
+                        </div>
+                    </form>
+                }
+
+                @* Contact info row *@
+                <div class="about-contact-row">
+                    <div class="about-contact-item">
+                        <span class="mono">Email</span>
+                        <a href="mailto:developer@cisconnect.my">developer@cisconnect.my</a>
+                    </div>
+                    <div class="about-contact-item">
+                        <span class="mono">Platform</span>
+                        <span>CIS Connect · Malaysia · 2026</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>

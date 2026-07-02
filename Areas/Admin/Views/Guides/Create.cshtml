@@ -1,0 +1,86 @@
+@model CISConnect.Models.GuideArticle
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow"><a asp-area="Admin" asp-controller="Guides" asp-action="Index">Guides</a> / New</span>
+        <h2 class="admin-page-title">New guide</h2>
+    </div>
+</div>
+
+<form action="/admin/guides/create" method="post" class="admin-form">
+    @Html.AntiForgeryToken()
+
+    <div class="admin-form-grid">
+        <div class="admin-form-main">
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Title">Title <span class="admin-required">*</span></label>
+                <input class="admin-input" asp-for="Title" placeholder="Guide title…" />
+                <span class="admin-validation" asp-validation-for="Title"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Summary">Summary</label>
+                <textarea class="admin-input admin-textarea-sm" asp-for="Summary" placeholder="Short description…" rows="2"></textarea>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Content">Content <span class="admin-required">*</span></label>
+                <textarea class="admin-input admin-textarea-lg" asp-for="Content" placeholder="Full guide content…" rows="14"></textarea>
+                <span class="admin-validation" asp-validation-for="Content"></span>
+            </div>
+
+        </div>
+
+        <div class="admin-form-side">
+
+            <div class="admin-panel">
+                <span class="admin-panel-title">Settings</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="MenuSectionId">Section <span class="admin-required">*</span></label>
+                    <select class="admin-input admin-select" asp-for="MenuSectionId" asp-items="ViewBag.Sections">
+                        <option value="">— select —</option>
+                    </select>
+                    <span class="admin-validation" asp-validation-for="MenuSectionId"></span>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="UniversityTag">University tag</label>
+                    <input class="admin-input" asp-for="UniversityTag" placeholder="e.g. XMUM" />
+                    <span class="admin-hint">Optional. Filters guide in university pages.</span>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="CreatedAt">Created at</label>
+                    <input class="admin-input" asp-for="CreatedAt" type="datetime-local" />
+                </div>
+            </div>
+
+            <div class="admin-panel" style="margin-top: 16px;">
+                <span class="admin-panel-title">Source</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="SourceName">Source name</label>
+                    <input class="admin-input" asp-for="SourceName" placeholder="e.g. University website" />
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="SourceUrl">Source URL</label>
+                    <input class="admin-input" asp-for="SourceUrl" placeholder="https://…" />
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="LastVerifiedAt">Last verified</label>
+                    <input class="admin-input" asp-for="LastVerifiedAt" type="datetime-local" />
+                </div>
+            </div>
+
+            <div class="admin-form-actions">
+                <button class="admin-btn admin-btn-primary" type="submit">Publish guide</button>
+                <a class="admin-btn admin-btn-ghost" asp-area="Admin" asp-controller="Guides" asp-action="Index">Cancel</a>
+            </div>
+
+        </div>
+    </div>
+</form>

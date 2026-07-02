@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow">Overview</span>
+        <h2 class="admin-page-title">Dashboard</h2>
+    </div>
+    <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Posts" asp-action="Create">
+        + New post
+    </a>
+</div>
+
+<div class="admin-stats-grid">
+    <div class="admin-stat-card">
+        <span class="admin-stat-label">Posts</span>
+        <span class="admin-stat-num">@ViewData["PostsCount"]</span>
+        <a class="admin-stat-link" asp-area="Admin" asp-controller="Posts" asp-action="Index">Manage →</a>
+    </div>
+    <div class="admin-stat-card">
+        <span class="admin-stat-label">Highlighted</span>
+        <span class="admin-stat-num admin-stat-hibiscus">@ViewData["HighlightedCount"]</span>
+        <a class="admin-stat-link" asp-area="Admin" asp-controller="Posts" asp-action="Index">Manage →</a>
+    </div>
+    <div class="admin-stat-card">
+        <span class="admin-stat-label">Guides</span>
+        <span class="admin-stat-num">@ViewData["GuidesCount"]</span>
+        <a class="admin-stat-link" asp-area="Admin" asp-controller="Guides" asp-action="Index">Manage →</a>
+    </div>
+    <div class="admin-stat-card">
+        <span class="admin-stat-label">Universities</span>
+        <span class="admin-stat-num">@ViewData["UnisCount"]</span>
+        <a class="admin-stat-link" asp-area="Admin" asp-controller="Universities" asp-action="Index">Manage →</a>
+    </div>
+    <div class="admin-stat-card">
+        <span class="admin-stat-label">FAQ items</span>
+        <span class="admin-stat-num">@ViewData["FaqCount"]</span>
+        <a class="admin-stat-link" asp-area="Admin" asp-controller="Faq" asp-action="Index">Manage →</a>
+    </div>
+</div>
+
+@if (ViewData["LatestPost"] is string latestPost)
+{
+    <div class="admin-panel" style="margin-top: 32px;">
+        <span class="admin-eyebrow">Latest</span>
+        <p class="admin-panel-value" style="margin-top: 8px;">@latestPost</p>
+    </div>
+}
+
+<div class="admin-quicklinks" style="margin-top: 32px;">
+    <span class="admin-eyebrow" style="margin-bottom: 16px; display:block;">Quick actions</span>
+    <div class="admin-quicklinks-grid">
+        <a class="admin-quicklink" asp-area="Admin" asp-controller="Posts" asp-action="Create">
+            <span class="admin-quicklink-icon">✦</span>
+            <span>New post</span>
+        </a>
+        <a class="admin-quicklink" asp-area="Admin" asp-controller="Guides" asp-action="Create">
+            <span class="admin-quicklink-icon">✦</span>
+            <span>New guide</span>
+        </a>
+        <a class="admin-quicklink" asp-area="Admin" asp-controller="Universities" asp-action="Create">
+            <span class="admin-quicklink-icon">✦</span>
+            <span>New university</span>
+        </a>
+        <a class="admin-quicklink" asp-area="Admin" asp-controller="Faq" asp-action="Create">
+            <span class="admin-quicklink-icon">✦</span>
+            <span>New FAQ item</span>
+        </a>
+    </div>
+</div>

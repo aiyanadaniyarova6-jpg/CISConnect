@@ -1,0 +1,52 @@
+@model CISConnect.Models.University
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow"><a asp-area="Admin" asp-controller="Universities" asp-action="Index">Universities</a> / New</span>
+        <h2 class="admin-page-title">New university</h2>
+    </div>
+</div>
+
+<form action="/admin/universities/create" method="post" class="admin-form">
+    @Html.AntiForgeryToken()
+
+    <div class="admin-form-grid">
+        <div class="admin-form-main">
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Name">University name <span class="admin-required">*</span></label>
+                <input class="admin-input" asp-for="Name" placeholder="e.g. Xiamen University Malaysia" />
+                <span class="admin-validation" asp-validation-for="Name"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Location">Location</label>
+                <input class="admin-input" asp-for="Location" placeholder="e.g. Sepang, Selangor" />
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Description">Description</label>
+                <textarea class="admin-input admin-textarea-lg" asp-for="Description" placeholder="University overview…" rows="10"></textarea>
+            </div>
+
+        </div>
+
+        <div class="admin-form-side">
+
+            <div class="admin-panel">
+                <span class="admin-panel-title">Details</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="CampusMapLink">Campus map URL</label>
+                    <input class="admin-input" asp-for="CampusMapLink" placeholder="https://maps.google.com/…" />
+                </div>
+            </div>
+
+            <div class="admin-form-actions">
+                <button class="admin-btn admin-btn-primary" type="submit">Create university</button>
+                <a class="admin-btn admin-btn-ghost" asp-area="Admin" asp-controller="Universities" asp-action="Index">Cancel</a>
+            </div>
+
+        </div>
+    </div>
+</form>

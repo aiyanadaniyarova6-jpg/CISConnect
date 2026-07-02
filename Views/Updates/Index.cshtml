@@ -1,0 +1,391 @@
+@model HomeViewModel
+@using CISConnect.Helpers
+
+@{
+    ViewData["Title"] = "Home";
+
+    var categories = new[] { "All", "Important", "Events", "Guides", "Tips", "Culture", "Community", "Updates" };
+    var countsByType = Model.LatestUpdates
+        .GroupBy(p => p.Category)
+        .ToDictionary(g => g.Key, g => g.Count());
+
+    var layouts = new[] { "feature", "tall", "medium", "medium", "wide", "text-only", "medium", "text-only" };
+}
+
+@* HERO ──────────────────────────────────────────────────────────── *@
+<section class="hero" id="hero">
+
+    @* parallax hibiscus *@
+    <div class="hero-flower" id="heroFlower" aria-hidden="true">
+        @{
+            ViewData["HibiscusVariant"] = "filled";
+            ViewData["HibiscusAnimated"] = true;
+        }
+        @await Html.PartialAsync("_Hibiscus")
+    </div>
+
+    @* headline *@
+    <h1 class="hero-headline">
+        <span class="reveal-line" style="--d:0ms"><span>Your <em>guide</em></span></span>
+        <span class="reveal-line" style="--d:80ms"><span>for students</span></span>
+        <span class="reveal-line" style="--d:160ms"><span class="clip-mask">in Malaysia</span></span>
+    </h1>
+
+    @* sub row *@
+    <div class="hero-sub">
+        <p class="fade-up" style="--d:300ms">
+            CIS Connect brings together arrival reminders, university guidance,
+            local tips, community updates and useful posts for CIS students
+            preparing for life in Malaysia.
+        </p>
+        <div class="stats fade-up" style="--d:420ms">
+            <div class="stat">
+                <div class="num">@Model.LatestUpdates.Count()</div>
+                <div class="lbl">Updates</div>
+            </div>
+            <div class="stat">
+                <div class="num">5</div>
+                <div class="lbl">Universities</div>
+            </div>
+            <div class="stat">
+                <div class="num">6</div>
+                <div class="lbl">Guides</div>
+            </div>
+        </div>
+    </div>
+
+    @* scroll hint *@
+    <div class="hero-scroll" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="line"></div>
+    </div>
+</section>
+
+@* MARQUEE ────────────────────────────────────────────────────────── *@
+<div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+        <span>
+            Pre-Arrival <span class="dot"></span>
+            Arrival &amp; Setup <span class="dot"></span>
+            Living in Malaysia <span class="dot"></span>
+            CIS Community <span class="dot"></span>
+            Universities <span class="dot"></span>
+            Deals &amp; Tips <span class="dot"></span>
+            Q&amp;A <span class="dot"></span>
+            Important Contacts
+        </span>
+    </div>
+</div>
+
+@* STUDENT JOURNEY ───────────────────────────────────────────────── *@
+<section class="section journey-section" id="journey" data-reveal>
+    <div class="container">
+        <div class="section-head">
+            <div class="section-title">
+                Student<br/><em>Journey</em>
+            </div>
+            <p class="section-lede">
+                A simple path from planning your move to settling in Malaysia.
+                Each step links to the part of CIS Connect that helps most.
+            </p>
+        </div>
+
+        <div class="journey-line" role="list">
+            <a class="journey-step" asp-controller="Universities" asp-action="Index" role="listitem">
+                <span class="num">01</span>
+                <h3>Choose university</h3>
+                <p>Compare campus options and useful university details.</p>
+            </a>
+            <a class="journey-step" asp-controller="Menu" asp-action="PreArrival" role="listitem">
+                <span class="num">02</span>
+                <h3>Prepare documents</h3>
+                <p>Check offer letter, EMGS, accreditation, and visa documents.</p>
+            </a>
+            <a class="journey-step" asp-controller="Menu" asp-action="PreArrival" role="listitem">
+                <span class="num">03</span>
+                <h3>Arrive through ISAC</h3>
+                <p>Know where to report before immigration at KLIA.</p>
+            </a>
+            <a class="journey-step" asp-controller="Menu" asp-action="ArrivalSetup" role="listitem">
+                <span class="num">04</span>
+                <h3>Set up first week</h3>
+                <p>Orientation, SIM card, banking, health screening, and support.</p>
+            </a>
+            <a class="journey-step" asp-controller="Menu" asp-action="CISCommunity" role="listitem">
+                <span class="num">05</span>
+                <h3>Join community</h3>
+                <p>Find student groups, local support, and useful community links.</p>
+            </a>
+            <a class="journey-step" asp-controller="Menu" asp-action="Deals" role="listitem">
+                <span class="num">06</span>
+                <h3>Plan graduation</h3>
+                <p>Save diploma legalization and post-study reminders early.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+@* IMMERSIVE — KL CINEMATIC BLOCK ──────────────────────────────────── *@
+<div class="imm-outer" id="immOuter" aria-hidden="true">
+    <div class="imm-sticky">
+
+        @* Background photo *@
+        <div class="imm-bg">
+            <img src="~/images/kl-night.jpg" alt="" loading="lazy" />
+            <div class="imm-bg-overlay"></div>
+        </div>
+
+        @* Expanding video card *@
+        <div class="imm-media" id="immMedia">
+            <iframe
+                src="https://www.youtube.com/embed/euX3ZXOfE8c?autoplay=1&mute=1&loop=1&playlist=euX3ZXOfE8c&controls=0&modestbranding=1&rel=0&showinfo=0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                loading="lazy">
+            </iframe>
+            <div class="imm-media-tint"></div>
+        </div>
+
+        @* Splitting title *@
+        <div class="imm-title" id="immTitle">
+            <span class="imm-word imm-left">CIS</span>
+            <span class="imm-word imm-right"><em>Connect</em></span>
+        </div>
+
+        @* Tagline — fades in when expanded *@
+        <div class="imm-tagline" id="immTagline">
+            <p>Your journey to Malaysia — guided, mapped, and ready.</p>
+        </div>
+
+        @* Scroll nudge *@
+        <div class="imm-nudge" id="immNudge">
+            <div class="imm-nudge-line"></div>
+            <span>Scroll</span>
+        </div>
+
+    </div>
+</div>
+
+@* UPDATES FEED ────────────────────────────────────────────────────── *@
+<section class="section updates-section" id="feed">
+    <div class="container">
+
+        @* section heading *@
+        <div class="section-head in-view-trigger" data-reveal>
+            <div class="section-title">
+                Latest<br/><em>Updates</em>
+            </div>
+            <p class="section-lede">
+                Important reminders, event announcements, guides, and community
+                posts — filtered by topic so you find what you need fast.
+            </p>
+        </div>
+
+        <form class="inline-search" asp-controller="Search" asp-action="Index" method="get" data-reveal>
+            <input type="search" name="q" placeholder="Search updates and guides..." aria-label="Search updates and guides" />
+            <button type="submit">Search</button>
+        </form>
+
+        @* filter chips *@
+        <div class="filter-bar" role="group" aria-label="Filter updates">
+            <span class="lbl">Filter</span>
+            @foreach (var cat in categories)
+            {
+                var count = cat == "All"
+                    ? Model.LatestUpdates.Count()
+                    : countsByType.GetValueOrDefault(cat, 0);
+                <button
+                    type="button"
+                    class="chip @(cat == "All" ? "active" : "")"
+                    data-filter-chip
+                    data-filter-value="@cat"
+                    aria-pressed="@(cat == "All" ? "true" : "false")">
+                    @cat
+                    <span class="count">@count</span>
+                </button>
+            }
+        </div>
+
+        @* skeleton shown instantly, hidden by JS once feed renders *@
+        @if (!Model.LatestUpdates.Any())
+        {
+            <div class="feed-skeleton" aria-hidden="true">
+                @for (int s = 0; s < 6; s++)
+                {
+                    <div class="feed-skeleton-card">
+                        <div class="skeleton feed-skeleton-img"></div>
+                        <div class="skeleton feed-skeleton-tag"></div>
+                        <div class="skeleton feed-skeleton-h"></div>
+                        <div class="skeleton feed-skeleton-p"></div>
+                        <div class="skeleton feed-skeleton-p2"></div>
+                    </div>
+                }
+            </div>
+        }
+
+        @* editorial grid *@
+        <div class="feed">
+            @{
+                var posts = Model.LatestUpdates.ToList();
+                for (int i = 0; i < posts.Count; i++)
+                {
+                    var p = posts[i];
+                    var layout = layouts[i % layouts.Length];
+                    var isImportant = p.IsHighlighted || p.Category == "Important";
+                    var pubDate = p.PublishedAt.ToString("MMM d, yyyy");
+                    var mediaType = (p.MediaType ?? string.Empty).Trim().ToLowerInvariant();
+                    var isYouTubeMedia = mediaType == "youtube" || !string.IsNullOrWhiteSpace(YouTubeHelper.GetId(p.MediaUrl ?? string.Empty));
+            <a class="post @layout" asp-controller="Post" asp-action="Details"
+               asp-route-id="update-@p.Id"
+               data-update-type="@p.Category"
+               data-save-card
+               data-save-id="update-@p.Id"
+               data-save-title="@p.Title"
+               data-save-summary="@p.Summary"
+               data-save-category="@p.Category"
+               data-save-date="@pubDate"
+               data-save-url="@Url.Action("Details", "Post", new { id = $"update-{p.Id}" })"
+               style="text-decoration:none;color:inherit;">
+                <button class="save-post-btn" type="button" data-save-button aria-label="Save post">♡</button>
+
+                @if (layout != "text-only")
+                {
+                    <div class="post-media">
+                        @if (isYouTubeMedia)
+                        {
+                            var thumbnail = YouTubeHelper.GetThumbnailUrl(p.MediaUrl ?? string.Empty);
+                            if (!string.IsNullOrWhiteSpace(thumbnail))
+                            {
+                                <img src="@thumbnail" alt="@p.MediaAltText" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+                                <span class="youtube-play-badge" aria-hidden="true">▶</span>
+                            }
+                            else
+                            {
+                                <div class="post-media-inner"></div>
+                            }
+                        }
+                        else if (mediaType == "image" && !string.IsNullOrWhiteSpace(p.MediaUrl))
+                        {
+                            <img src="@p.MediaUrl" alt="@p.MediaAltText" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+                        }
+                        else
+                        {
+                            <div class="post-media-noimg">
+                                <svg class="post-media-noimg-flower" viewBox="-160 -160 320 320" aria-hidden="true">
+                                    @for (int r = 0; r < 5; r++) {
+                                        <g transform="rotate(@(r * 72)) translate(0 -10)">
+                                            <path d="M 0 0 C -36 -28 -44 -78 -22 -118 C -10 -140 10 -140 22 -118 C 44 -78 36 -28 0 0 Z" fill="rgba(194,65,12,0.2)"/>
+                                        </g>
+                                    }
+                                    <circle cx="0" cy="0" r="18" fill="rgba(253,250,242,0.12)"/>
+                                    <circle cx="0" cy="0" r="8" fill="rgba(184,132,31,0.5)"/>
+                                </svg>
+                                <span class="post-media-noimg-cat">@p.Category</span>
+                                @if (!string.IsNullOrWhiteSpace(p.Summary))
+                                {
+                                    <p class="post-media-noimg-text">@(p.Summary.Length > 100 ? p.Summary[..100] + "…" : p.Summary)</p>
+                                }
+                            </div>
+                        }
+                        @if (isImportant)
+                        {
+                            <span class="post-badge important">@p.Category</span>
+                        }
+                        else
+                        {
+                            <span class="post-badge">@p.Category</span>
+                        }
+                    </div>
+                }
+
+                <div class="post-meta">
+                    <span class="cat">@p.Category</span>
+                    <span data-rel-date="@p.PublishedAt.ToString("yyyy-MM-dd")">@pubDate</span>
+                </div>
+                <h2 class="post-title">@p.Title</h2>
+                @if (!string.IsNullOrWhiteSpace(p.Summary))
+                {
+                    <p class="post-summary">@p.Summary</p>
+                }
+                <span class="post-cta">Read more <span class="arrow">→</span></span>
+            </a>
+                }
+            }
+        </div>
+
+        @* Mobile show-more — only visible on ≤760px via CSS *@
+        <div class="feed-show-more" id="feedShowMore">
+            <button type="button" id="feedShowMoreBtn">Show all posts</button>
+        </div>
+
+    </div>
+
+    @* pagination *@
+    @if (Model.TotalPages > 1)
+    {
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;padding:48px 0 24px;">
+            @if (Model.HasPreviousPage)
+            {
+                <a asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)"
+                   style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:1px solid var(--ink-200);border-radius:99px;font-size:14px;text-decoration:none;color:var(--ink-700);">
+                    ← Previous
+                </a>
+            }
+            @for (int p = 1; p <= Model.TotalPages; p++)
+            {
+                <a asp-action="Index" asp-route-page="@p"
+                   style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:14px;text-decoration:none;@(p == Model.CurrentPage ? "background:var(--hibiscus);color:#fff;font-weight:500;" : "color:var(--ink-700);border:1px solid var(--ink-200);")">
+                    @p
+                </a>
+            }
+            @if (Model.HasNextPage)
+            {
+                <a asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)"
+                   style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:1px solid var(--ink-200);border-radius:99px;font-size:14px;text-decoration:none;color:var(--ink-700);">
+                    Next →
+                </a>
+            }
+        </div>
+    }
+
+    @* small hibiscus motif *@
+    <div class="section-motif right" aria-hidden="true">
+        @{
+            ViewData["HibiscusVariant"] = "stroke";
+            ViewData["HibiscusAnimated"] = false;
+        }
+        @await Html.PartialAsync("_Hibiscus")
+    </div>
+</section>
+
+@* STORY SECTION ───────────────────────────────────────────────────── *@
+<section class="section story-section" data-reveal>
+    <div class="container">
+        <div class="story-inner">
+            <div class="story-text">
+                <span class="eyebrow">Why CIS Connect</span>
+                <h2 class="word-reveal" style="margin-top:24px;">
+                    From arrival questions to everyday student life
+                </h2>
+                <p style="margin-top:28px;">
+                    Moving to Malaysia as a CIS student comes with a unique set of
+                    questions — visa timelines, campus contacts, halal food guides,
+                    currency exchanges. CIS Connect gathers all of this in one
+                    calm, well-organised place.
+                </p>
+                <p>
+                    Browse by topic, search Q&amp;A, or dive straight into the
+                    university guide for your campus.
+                </p>
+                <span class="signature">CIS Connect · Malaysia 2026</span>
+            </div>
+            <div class="story-image story-bloom in-view-trigger" data-reveal>
+                <div class="story-reveal-mask"></div>
+                <div class="story-orbit one"></div>
+                <div class="story-orbit two"></div>
+                <img class="story-main-flower" src="~/images/hibiscus-3d.png" alt="Hibiscus flower" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+                <div class="story-placeholder">CIS Connect</div>
+            </div>
+        </div>
+    </div>
+</section>

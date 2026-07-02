@@ -1,0 +1,110 @@
+@model PostCardViewModel
+
+@{
+    var wordCount   = Model.Content?.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length ?? 0;
+    var readMinutes = Math.Max(1, wordCount / 200);
+    var mediaType = (Model.MediaType ?? string.Empty).Trim().ToLowerInvariant();
+    var mediaUrl = (Model.MediaUrl ?? string.Empty).Trim();
+    var isYouTubeMedia = mediaType == "youtube" || !string.IsNullOrWhiteSpace(GetYouTubeId(mediaUrl));
+
+    string GetYouTubeId(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return string.Empty;
+        }
+
+        var value = url.Trim();
+
+        if (value.Contains("/embed/", StringComparison.OrdinalIgnoreCase))
+        {
+            return value.Split("/embed/", StringSplitOptions.RemoveEmptyEntries).Last().Split('?', '&', '/').FirstOrDefault() ?? string.Empty;
+        }
+
+        if (value.Contains("youtu.be/", StringComparison.OrdinalIgnoreCase))
+        {
+            return value.Split("youtu.be/", StringSplitOptions.RemoveEmptyEntries).Last().Split('?', '&', '/').FirstOrDefault() ?? string.Empty;
+        }
+
+        if (value.Contains("watch?v=", StringComparison.OrdinalIgnoreCase))
+        {
+            return value.Split("watch?v=", StringSplitOptions.RemoveEmptyEntries).Last().Split('&').FirstOrDefault() ?? string.Empty;
+        }
+
+        return string.Empty;
+    }
+
+    string GetYouTubeEmbedUrl(string url)
+    {
+        var id = GetYouTubeId(url);
+        return string.IsNullOrWhiteSpace(id)
+            ? url
+            : $"https://www.youtube-nocookie.com/embed/{id}";
+    }
+}
+
+<article class="content-card update-post-card" data-category="@Model.Category">
+
+    <!-- Header: badges + meta -->
+    <div class="card-header-row">
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <span class="content-badge">@Model.Category</span>
+            @if (Model.IsHighlighted)
+            {
+                <span class="content-badge content-badge-highlight">★ Highlighted</span>
+            }
+        </div>
+        <div class="card-meta">
+            <span class="card-read-time">@readMinutes min read</span>
+            <small class="muted-text">@Model.PublishedAt.ToString("dd MMM yyyy")</small>
+            <span class="card-arrow" aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <h2 class="card-title">@Model.Title</h2>
+    <p class="card-summary">@Model.Summary</p>
+    <p class="card-body-text">@Model.Content</p>
+
+    <!-- Media -->
+    @if (!string.IsNullOrWhiteSpace(mediaUrl) && (mediaType == "image" || mediaType == "video" || isYouTubeMedia))
+    {
+        <div class="post-media-shell">
+            @if (mediaType == "image")
+            {
+                <img
+                    class="post-media-img"
+                    src="@mediaUrl"
+                    alt="@Model.MediaAltText"
+                    loading="lazy"
+                    decoding="async" />
+            }
+            else if (mediaType == "video")
+            {
+                <video
+                    class="post-media-video"
+                    controls
+                    preload="none"
+                    playsinline
+                    muted
+                    data-lazy-video>
+                    <source src="@mediaUrl" />
+                    Your browser does not support the video tag.
+                </video>
+            }
+            else if (isYouTubeMedia)
+            {
+                <iframe
+                    class="post-media-youtube"
+                    src="@GetYouTubeEmbedUrl(mediaUrl)"
+                    title="@Model.MediaAltText"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
+            }
+        </div>
+    }
+
+</article>

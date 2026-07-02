@@ -1,0 +1,174 @@
+@model UniversityDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.University?.Name ?? "University Details";
+    var uni = Model.University!;
+    var sections = Model.OrderedSections().ToList();
+
+    var shortCode = uni.Name?.Length > 0
+        ? string.Concat(uni.Name!.Split(' ', System.StringSplitOptions.RemoveEmptyEntries)
+            .Where(word => char.IsLetter(word[0]) && char.IsUpper(word[0]))
+            .Select(word => word[0].ToString()))
+        : "UNI";
+
+    var displayCode = uni.Name switch
+    {
+        "Asia Pacific University (APU)" => "APU",
+        "Xiamen University Malaysia" => "XMUM",
+        "Sunway University" => "Sunway",
+        "Taylor's University" => "Taylor's",
+        "UCSI University" => "UCSI",
+        _ => shortCode
+    };
+
+    var logoUrl = uni.Name switch
+    {
+        "Asia Pacific University (APU)" => Url.Content("~/images/logos/APU_logo.png"),
+        "Xiamen University Malaysia" => Url.Content("~/images/logos/XMUM_logo.avif"),
+        "Sunway University" => Url.Content("~/images/logos/Sunway_logo.avif"),
+        "Taylor's University" => Url.Content("~/images/logos/Taylors_logo.png"),
+        "UCSI University" => Url.Content("~/images/logos/UCSI_logo.png"),
+        _ => null
+    };
+}
+
+@functions {
+    private static string TabId(string sectionType)
+    {
+        return sectionType
+            .ToLowerInvariant()
+            .Replace("&", "and")
+            .Replace("/", "-")
+            .Replace(" ", "-")
+            .Replace("--", "-");
+    }
+}
+
+<div style="padding: 120px 0 0; background: var(--surface);">
+    <div class="container">
+        <a asp-controller="Universities" asp-action="Index"
+           class="eyebrow uni-back-link">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0">
+                <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All universities
+        </a>
+    </div>
+</div>
+
+<section style="padding: 32px 0 80px; background: var(--surface);">
+    <div class="container">
+
+        <div class="uni-detail-card" data-reveal>
+            <div class="uni-card-head">
+                <div class="uni-card-media">
+                    <div class="uni-card-media-placeholder">
+                        @if (!string.IsNullOrWhiteSpace(logoUrl))
+                        {
+                            <span class="uni-wordmark uni-wordmark-logo">
+                                <img src="@logoUrl" alt="@uni.Name logo" loading="lazy" decoding="async" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="uni-wordmark">@displayCode</span>
+                        }
+                        <span>Campus Guide</span>
+                    </div>
+                    <span class="uni-card-badge">@displayCode</span>
+                </div>
+
+                <div class="uni-card-meta">
+                    <span class="eyebrow">University Guide</span>
+                    <h1 class="uni-card-name">@uni.Name</h1>
+                    @if (!string.IsNullOrWhiteSpace(uni.Location))
+                    {
+                        <div class="uni-card-loc">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                <path d="M7 1C4.8 1 3 2.8 3 5c0 3.25 4 8 4 8s4-4.75 4-8c0-2.2-1.8-4-4-4Zm0 5.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"
+                                      fill="currentColor"/>
+                            </svg>
+                            @uni.Location
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(uni.Description))
+                    {
+                        <p class="uni-card-desc">@uni.Description</p>
+                    }
+                    <div class="uni-card-actions">
+                        @if (!string.IsNullOrWhiteSpace(uni.CampusMapLink))
+                        {
+                            <a class="uni-card-btn primary" href="@uni.CampusMapLink" target="_blank" rel="noopener noreferrer">
+                                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                                    <path d="M2 11L11 2M11 2H5M11 2v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                University website
+                            </a>
+                        }
+                        <a class="uni-card-btn" asp-controller="Universities" asp-action="Compare">Compare universities</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uni-tabs" role="tablist" aria-label="@uni.Name guide sections">
+                @for (var i = 0; i < sections.Count; i++)
+                {
+                    var guideSection = sections[i];
+                    var tabId = TabId(guideSection.SectionType);
+                    <button class="uni-tab @(i == 0 ? "active" : "")" role="tab" data-tab="@tabId" aria-controls="tab-@tabId">
+                        @guideSection.SectionType
+                    </button>
+                }
+            </div>
+
+            <div class="uni-tab-body">
+                @for (var i = 0; i < sections.Count; i++)
+                {
+                    var guideSection = sections[i];
+                    var tabId = TabId(guideSection.SectionType);
+                    <div class="uni-tab-pane @(i == 0 ? "active" : "")" id="tab-@tabId" role="tabpanel">
+                        <div class="uni-section-content">
+                            <span class="eyebrow">@guideSection.SectionType</span>
+                            <h2>@guideSection.Title</h2>
+                            @if (!string.IsNullOrWhiteSpace(guideSection.Content))
+                            {
+                                @Html.Raw(guideSection.Content)
+                            }
+                            else
+                            {
+                                <div class="uni-tab-placeholder">@guideSection.SectionType · Coming soon</div>
+                            }
+
+                            @if (guideSection.SectionType == "Campus Map" && !string.IsNullOrWhiteSpace(uni.CampusMapLink))
+                            {
+                                <a class="uni-card-btn" href="@uni.CampusMapLink" target="_blank" rel="noopener noreferrer">
+                                    Open official campus link →
+                                </a>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(guideSection.SourceName))
+                            {
+                                <aside class="section-source-card" aria-label="Section source and verification">
+                                    <span>Source</span>
+                                    @if (!string.IsNullOrWhiteSpace(guideSection.SourceUrl))
+                                    {
+                                        <a href="@guideSection.SourceUrl" target="_blank" rel="noopener noreferrer">@guideSection.SourceName</a>
+                                    }
+                                    else
+                                    {
+                                        <strong>@guideSection.SourceName</strong>
+                                    }
+                                    @if (guideSection.LastVerifiedAt.HasValue)
+                                    {
+                                        <small>Last verified @guideSection.LastVerifiedAt.Value.ToString("dd MMM yyyy")</small>
+                                    }
+                                </aside>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</section>

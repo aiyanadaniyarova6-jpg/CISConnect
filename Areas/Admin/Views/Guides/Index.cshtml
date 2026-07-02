@@ -1,0 +1,55 @@
+@model IEnumerable<CISConnect.Models.GuideArticle>
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow">Content</span>
+        <h2 class="admin-page-title">Guides <span class="admin-count">@Model.Count()</span></h2>
+    </div>
+    <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Guides" asp-action="Create">
+        + New guide
+    </a>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Section</th>
+                <th>University tag</th>
+                <th>Created</th>
+                <th class="admin-th-actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var g in Model)
+            {
+                <tr>
+                    <td class="admin-td-title">
+                        <span class="admin-td-name">@g.Title</span>
+                        @if (!string.IsNullOrWhiteSpace(g.Summary))
+                        {
+                            <span class="admin-td-sub">@(g.Summary.Length > 80 ? g.Summary[..80] + "…" : g.Summary)</span>
+                        }
+                    </td>
+                    <td><span class="admin-badge">@(g.MenuSection?.Name ?? "—")</span></td>
+                    <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(g.UniversityTag) ? "—" : g.UniversityTag)</td>
+                    <td class="admin-td-mono">@g.CreatedAt.ToString("dd MMM yyyy")</td>
+                    <td class="admin-td-actions">
+                        <a class="admin-action-link" asp-area="Admin" asp-controller="Guides" asp-action="Edit" asp-route-id="@g.Id">Edit</a>
+                        <form action="/admin/guides/delete" method="post" class="admin-inline-form"
+                              onsubmit="return confirm('Delete «@g.Title»?')">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@g.Id" />
+                            <button type="submit" class="admin-action-link admin-action-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any())
+    {
+        <div class="admin-empty">No guides yet. <a asp-area="Admin" asp-controller="Guides" asp-action="Create">Create the first one →</a></div>
+    }
+</div>

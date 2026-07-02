@@ -1,0 +1,200 @@
+@model PostDetailsViewModel
+@using CISConnect.Helpers
+
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.Summary;
+    ViewData["OgImage"] = !string.IsNullOrWhiteSpace(Model.MediaUrl) && (Model.MediaType == "image") ? Model.MediaUrl : null;
+
+    var wordCount   = Model.Content?.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length ?? 0;
+    var readMinutes = Math.Max(1, wordCount / 200);
+    var mediaType   = (Model.MediaType ?? string.Empty).Trim().ToLowerInvariant();
+    var mediaUrl    = (Model.MediaUrl ?? string.Empty).Trim();
+    var youtubeId   = YouTubeHelper.GetId(mediaUrl);
+    var isYouTubeMedia = mediaType == "youtube" || !string.IsNullOrWhiteSpace(youtubeId);
+}
+
+<div class="post-detail">
+
+    @* back *@
+    <div class="post-detail-top">
+        <a class="back" asp-controller="@Model.BackController" asp-action="@Model.BackAction">
+            ← @Model.BackButtonText
+        </a>
+        <div class="post-detail-actions">
+            <button class="share-btn" type="button" id="shareBtn" aria-label="Copy link to this post">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                    <polyline points="16 6 12 2 8 6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+                <span id="shareBtnLabel">Share</span>
+            </button>
+            <button class="save-post-btn detail"
+                    type="button"
+                    data-save-button
+                    data-save-id="@Model.PublicId"
+                    data-save-title="@Model.Title"
+                    data-save-summary="@Model.Summary"
+                    data-save-category="@Model.Category"
+                    data-save-date="@Model.PublishedAt.ToString("MMM d, yyyy")"
+                    data-save-url="@Url.Action("Details", "Post", new { id = Model.PublicId })"
+                    aria-label="Save post">
+                ♡ Save
+            </button>
+        </div>
+    </div>
+
+    @* meta *@
+    <div class="meta-row">
+        <span class="cat">@Model.Category</span>
+        <span>@Model.PublishedAt.ToString("dd MMM yyyy")</span>
+        <span>@readMinutes min read</span>
+        @if (Model.IsHighlighted)
+        {
+            <span style="color:var(--leaf);">★ Highlighted</span>
+        }
+    </div>
+
+    @* title *@
+    <h1>@Model.Title</h1>
+
+    @* lede / summary *@
+    @if (!string.IsNullOrWhiteSpace(Model.Summary))
+    {
+        <p class="lede">@Model.Summary</p>
+    }
+
+    @* hero media *@
+    @if (!string.IsNullOrWhiteSpace(mediaUrl) && (mediaType == "image" || mediaType == "video" || isYouTubeMedia))
+    {
+        <div class="hero-image @(mediaType == "video" ? "hero-video" : isYouTubeMedia ? "hero-youtube" : "")">
+            @if (mediaType == "image")
+            {
+                <img src="@mediaUrl" alt="@Model.MediaAltText" style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async" />
+            }
+            else if (mediaType == "video")
+            {
+                <video controls preload="metadata" playsinline muted>
+                    <source src="@mediaUrl" />
+                </video>
+            }
+            else if (isYouTubeMedia)
+            {
+                <iframe
+                    src="@YouTubeHelper.GetEmbedUrl(mediaUrl)"
+                    title="@Model.MediaAltText"
+                    width="100%"
+                    height="100%"
+                    style="display:block;width:100%;height:100%;border:0;border-radius:20px;min-height:360px;"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
+                <a class="youtube-fallback-link" href="@YouTubeHelper.GetWatchUrl(mediaUrl)" target="_blank" rel="noopener noreferrer">
+                    Open on YouTube ↗
+                </a>
+            }
+        </div>
+    }
+
+    @* body *@
+    <div class="body" data-reading-content>
+        @* Html.Raw is intentionally used here. Content is only ever written by the application seeder
+           (DbSeeder.cs) — it is never sourced from user input, form submissions, or external APIs.
+           Any future feature that accepts user-supplied content must sanitize before storing. *@
+        @if (!string.IsNullOrWhiteSpace(Model.Content) && Model.Content.Contains('<'))
+        {
+            @Html.Raw(Model.Content)
+        }
+        else
+        {
+            <p>@Model.Content</p>
+        }
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.SourceName))
+    {
+        <aside class="source-card" aria-label="Content source and verification">
+            <div>
+                <span class="mono">Source</span>
+                @if (!string.IsNullOrWhiteSpace(Model.SourceUrl))
+                {
+                    <a href="@Model.SourceUrl" target="_blank" rel="noopener noreferrer">@Model.SourceName</a>
+                }
+                else
+                {
+                    <strong>@Model.SourceName</strong>
+                }
+            </div>
+            @if (Model.LastVerifiedAt.HasValue)
+            {
+                <div>
+                    <span class="mono">Last verified</span>
+                    <strong>@Model.LastVerifiedAt.Value.ToString("dd MMM yyyy")</strong>
+                </div>
+            }
+        </aside>
+    }
+
+    @* prev / next pager *@
+    @if (Model.PreviousPost is not null || Model.NextPost is not null)
+    {
+        <div class="post-pager">
+            @if (Model.PreviousPost is not null)
+            {
+                <a class="post-pager-link" asp-controller="Post" asp-action="Details" asp-route-id="@Model.PreviousPost.PublicId">
+                    <span class="mono">← Previous</span>
+                    <span class="t">@Model.PreviousPost.Title</span>
+                </a>
+            }
+            else
+            {
+                <div></div>
+            }
+
+            @if (Model.NextPost is not null)
+            {
+                <a class="post-pager-link next" asp-controller="Post" asp-action="Details" asp-route-id="@Model.NextPost.PublicId">
+                    <span class="mono">Next →</span>
+                    <span class="t">@Model.NextPost.Title</span>
+                </a>
+            }
+            else
+            {
+                <div></div>
+            }
+        </div>
+    }
+
+    @* related posts *@
+    @if (Model.RelatedPosts.Any())
+    {
+        <div class="related">
+            <div class="related-heading">
+                <h3>Related stories</h3>
+                <p>Quick links to continue reading without a long scroll.</p>
+            </div>
+            <div class="related-list">
+                @foreach (var rel in Model.RelatedPosts)
+                {
+                    <a class="related-list-item" asp-controller="Post" asp-action="Details" asp-route-id="@rel.PublicId">
+                        <div>
+                            <div class="post-meta compact">
+                                <span class="cat">@rel.Category</span>
+                                <span>@rel.PublishedAt.ToString("MMM d, yyyy")</span>
+                            </div>
+                            <h4>@rel.Title</h4>
+                            @if (!string.IsNullOrWhiteSpace(rel.Summary))
+                            {
+                                <p>@rel.Summary</p>
+                            }
+                        </div>
+                        <span class="related-arrow">→</span>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+
+</div>

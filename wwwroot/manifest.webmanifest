@@ -1,0 +1,24 @@
+{
+  "name": "CIS Connect",
+  "short_name": "CIS Connect",
+  "description": "Student support platform for CIS students in Malaysia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3ecdf",
+  "theme_color": "#1e3a8a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

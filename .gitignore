@@ -1,0 +1,32 @@
+## .NET build outputs
+bin/
+obj/
+
+## User secrets and local config
+appsettings.*.json
+!appsettings.json
+secrets.json
+
+## Uploaded files (generated at runtime)
+wwwroot/uploads/
+
+## Large media files
+wwwroot/media/posts/videos/*.mov
+wwwroot/media/posts/videos/*.mp4
+
+## IDE and tool configs
+.vscode/
+.idea/
+.claude/
+*.user
+
+## macOS
+.DS_Store
+
+## NuGet
+*.nupkg
+.nuget/
+
+## Logs
+*.log
+Logs/

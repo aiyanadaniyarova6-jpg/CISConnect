@@ -1,0 +1,187 @@
+@model MenuPageViewModel
+
+@{
+    ViewData["Title"] = "Important Contacts";
+    var groupedContacts = Model.Contacts
+        .GroupBy(c => c.Category)
+        .OrderBy(g => g.Key)
+        .ToList();
+}
+
+@* ── Page header ─────────────────────────────────────────────────────────── *@
+<section class="guide-section" style="padding-top: 120px;">
+    <div class="container">
+        <a href="/" class="eyebrow back-link" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink-500);text-decoration:none;margin-bottom:32px;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0">
+                <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back to home
+        </a>
+
+        <div class="guide-header" data-reveal>
+            <span class="eyebrow" style="display:block;margin-bottom:14px;">Emergency & support</span>
+            <h1 class="guide-title">Important <span class="contacts-circle-wrap"><em>Contacts</em><svg class="contacts-circle-svg" viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="contacts-circle-path" d="M 385 28 C 412 62, 382 108, 200 112 C 22 112, -5 78, 8 55 C 20 22, 80 8, 200 8 C 330 8, 390 30, 385 28" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></h1>
+            @if (!string.IsNullOrWhiteSpace(Model.Section?.Description))
+            {
+                <p style="font-size:17px;line-height:1.6;color:var(--ink-700);margin-top:24px;max-width:640px;">@Model.Section.Description</p>
+            }
+            else
+            {
+                <p style="font-size:17px;line-height:1.6;color:var(--ink-700);margin-top:24px;max-width:640px;">
+                    Key phone numbers, email addresses and offices for CIS students in Malaysia.
+                    Save these — they come in handy more often than you'd expect.
+                </p>
+            }
+        </div>
+
+        @* ── Support notes (articles) ─────────────────────────────────────── *@
+        @if (Model.Articles.Any())
+        {
+            <div style="max-width:680px;margin-bottom:60px;padding:32px;background:rgba(194,65,12,0.04);border:1px solid rgba(194,65,12,0.15);border-radius:12px;" data-reveal>
+                @foreach (var article in Model.Articles)
+                {
+                    <p class="eyebrow" style="margin-bottom:8px;color:var(--hibiscus);">@article.Title</p>
+                    <p style="font-size:15px;line-height:1.6;color:var(--ink-700);margin-bottom:0;">@article.Content</p>
+                }
+            </div>
+        }
+
+        @if (Model.CountrySupportItems.Any())
+        {
+            <section class="country-hub" data-reveal>
+                <div class="country-hub-head">
+                    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                        <div>
+                            <span class="eyebrow">Country Support Hub</span>
+                            <h2>Find your embassy and support starting point</h2>
+                        </div>
+                        <button class="country-hub-toggle" id="countryHubToggle" type="button" aria-expanded="true" aria-controls="countrySupportGrid">
+                            <span class="country-hub-toggle-label">Hide</span>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                <path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <input type="search" id="countrySupportSearch" placeholder="Search country..." aria-label="Search country support" />
+                </div>
+
+                <div class="country-grid" id="countrySupportGrid">
+                    @foreach (var item in Model.CountrySupportItems.OrderBy(i => i.Country))
+                    {
+                        <article class="country-card" data-country-card data-country="@item.Country.ToLowerInvariant()">
+                            <span class="mono">@item.Country</span>
+                            <h3>@item.EmbassyName</h3>
+                            <p>@item.CommunityNote</p>
+                            <p class="tip">@item.StudentTip</p>
+                            <a class="soft-button" href="@item.EmbassyUrl" target="_blank" rel="noopener">Open official link</a>
+                        </article>
+                    }
+                </div>
+            </section>
+        }
+
+        @* ── Contact groups ───────────────────────────────────────────────── *@
+        @if (groupedContacts.Any())
+        {
+            @foreach (var group in groupedContacts)
+            {
+                <div style="margin-bottom:72px;" data-reveal>
+                    @* group heading *@
+                    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid rgba(10,14,31,0.15);">
+                        <h2 style="font-family:var(--font-display);font-size:clamp(22px,2.4vw,32px);font-weight:400;letter-spacing:-0.025em;line-height:1;">@group.Key</h2>
+                        <span class="mono" style="color:var(--ink-400);">@group.Count() contact@(group.Count() != 1 ? "s" : "")</span>
+                    </div>
+
+                    @* contact cards grid *@
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+                        @foreach (var contact in group)
+                        {
+                            <div style="background:var(--paper);border:1px solid rgba(10,14,31,0.08);border-radius:12px;padding:24px 28px;display:flex;flex-direction:column;gap:12px;">
+                                <div>
+                                    <p class="eyebrow" style="margin-bottom:4px;color:var(--hibiscus);">@group.Key</p>
+                                    <h3 style="font-family:var(--font-display);font-size:20px;font-weight:400;letter-spacing:-0.02em;line-height:1.1;">@contact.Name</h3>
+                                </div>
+                                <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--ink-700);">
+                                    @if (!string.IsNullOrWhiteSpace(contact.Phone))
+                                    {
+                                        <a href="tel:@contact.Phone.Replace(" ", "")"
+                                           style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;">
+                                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;opacity:.5">
+                                                <path d="M11.5 9.2c-.5-.4-1.5-1-2-.8l-.7.3c-.5.2-1.1-.1-1.9-.9L5.1 6c-.8-.8-1.1-1.4-.9-1.9l.3-.7c.2-.5-.3-1.5-.8-2L3.3.9C2.8.4 2.1.3 1.6.8L.8 1.6C.2 2.2.3 3.2.8 4c1.4 2 3.4 4 5.4 5.4.8.5 1.8.6 2.4 0l.8-.8c.5-.5.4-1.2-.9-1.4Z" fill="currentColor"/>
+                                            </svg>
+                                            @contact.Phone
+                                        </a>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(contact.Email))
+                                    {
+                                        <a href="mailto:@contact.Email"
+                                           style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;word-break:break-all;">
+                                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;opacity:.5">
+                                                <path d="M1 3h11v8H1V3Zm0 0 5.5 4.5L12 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            @contact.Email
+                                        </a>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(contact.Address))
+                                    {
+                                        <div style="display:flex;align-items:flex-start;gap:8px;">
+                                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;margin-top:2px;opacity:.5">
+                                                <path d="M6.5 1C4.6 1 3 2.6 3 4.5c0 2.9 3.5 7 3.5 7S10 7.4 10 4.5C10 2.6 8.4 1 6.5 1Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z" fill="currentColor"/>
+                                            </svg>
+                                            <span>@contact.Address</span>
+                                        </div>
+                                    }
+                                </div>
+                                @if (!string.IsNullOrWhiteSpace(contact.Notes))
+                                {
+                                    <p style="font-size:12px;line-height:1.5;color:var(--ink-400);margin-top:auto;padding-top:10px;border-top:1px solid rgba(10,14,31,0.07);">@contact.Notes</p>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div style="padding:80px 0;text-align:center;color:var(--ink-500);">
+                <p class="eyebrow" style="margin-bottom:12px;">Coming soon</p>
+                <p style="font-size:17px;">Contact details are being compiled.</p>
+            </div>
+        }
+
+    </div>
+
+    @* hibiscus motif *@
+    <div class="section-motif right" aria-hidden="true">
+        @{
+            ViewData["HibiscusVariant"] = "stroke";
+            ViewData["HibiscusAnimated"] = false;
+        }
+        @await Html.PartialAsync("_Hibiscus")
+    </div>
+
+</section>
+
+<script>
+// CSS calc(100%+px) doesn't work on SVG replaced elements — measure and set in JS instead.
+(function () {
+    function fitCircle() {
+        var em  = document.querySelector('.contacts-circle-wrap em');
+        var svg = document.querySelector('.contacts-circle-svg');
+        if (!em || !svg) return;
+        var padX = 28, padY = 18;
+        svg.style.width  = (em.offsetWidth  + padX * 2) + 'px';
+        svg.style.height = (em.offsetHeight + padY * 2) + 'px';
+        svg.style.left   = '-' + padX + 'px';
+        svg.style.top    = '-' + padY + 'px';
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fitCircle);
+    } else {
+        fitCircle();
+    }
+    window.addEventListener('resize', fitCircle);
+})();
+</script>
+

@@ -1,0 +1,108 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration _config
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CIS Connect</title>
+    <meta name="description" content="@(ViewData["Description"] ?? "CIS Connect — A field guide for Central Asian students in Malaysia.")" />
+    <meta name="theme-color" content="#1e3a8a" />
+    <link rel="icon" href="~/images/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+
+    @* Canonical URL *@
+    @if (ViewData["CanonicalUrl"] != null)
+    {
+        <link rel="canonical" href="@ViewData["CanonicalUrl"]" />
+    }
+
+    @* Open Graph *@
+    <meta property="og:site_name" content="CIS Connect" />
+    <meta property="og:type" content="@(ViewData["OgType"] ?? "website")" />
+    <meta property="og:title" content="@ViewData["Title"] - CIS Connect" />
+    <meta property="og:description" content="@(ViewData["Description"] ?? "A centralized field guide for Central Asian students in Malaysia.")" />
+    @if (ViewData["CanonicalUrl"] != null)
+    {
+        <meta property="og:url" content="@ViewData["CanonicalUrl"]" />
+    }
+    @{
+        var ogImg = ViewData["OgImage"]?.ToString() ?? "/images/og-image.png";
+    }
+    <meta property="og:image" content="@ogImg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    @* Twitter / X card *@
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@ViewData["Title"] - CIS Connect" />
+    <meta name="twitter:description" content="@(ViewData["Description"] ?? "A centralized field guide for Central Asian students in Malaysia.")" />
+    <meta name="twitter:image" content="@ogImg" />
+    @if (ViewData["OgImage"] != null)
+    {
+        <meta name="twitter:image" content="@ViewData["OgImage"]" />
+    }
+
+    @* JSON-LD structured data *@
+    @if (ViewData["JsonLd"] != null)
+    {
+        <script type="application/ld+json">@Html.Raw(ViewData["JsonLd"])</script>
+    }
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @* Google Analytics 4 — only loads when Measurement ID is configured *@
+    @{
+        var ga4Id = _config["Analytics:GA4MeasurementId"];
+    }
+    @if (!string.IsNullOrWhiteSpace(ga4Id))
+    {
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@ga4Id"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '@ga4Id', { send_page_view: true });
+            window.__ga4Id = '@ga4Id';
+        </script>
+    }
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</head>
+<body>
+
+    <div id="scrollProgressBar"></div>
+    <div class="cursor" id="cursor"></div>
+    <div id="cursorTrail"></div>
+    <div class="route-overlay" id="routeOverlay">
+        <svg class="route-overlay-logo" viewBox="-160 -160 320 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            @for (int _rp = 0; _rp < 5; _rp++) {
+                <g transform="rotate(@(_rp * 72)) translate(0 -10)">
+                    <path d="M 0 0 C -36 -28 -44 -78 -22 -118 C -10 -140 10 -140 22 -118 C 44 -78 36 -28 0 0 Z" fill="#fdfaf2" opacity="0.8"/>
+                </g>
+            }
+            <circle cx="0" cy="0" r="14" fill="#fdfaf2" opacity="0.6"/>
+        </svg>
+    </div>
+
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <div class="app-shell">
+        @await Html.PartialAsync("_Navbar")
+        <main id="main-content">
+            @RenderBody()
+        </main>
+        @await Html.PartialAsync("_Footer")
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

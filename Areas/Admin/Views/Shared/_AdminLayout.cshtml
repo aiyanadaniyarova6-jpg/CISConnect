@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — CIS Connect Admin</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="~/images/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+
+@{
+    var ctrl = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<div class="admin-shell">
+
+    @* ── Sidebar ──────────────────────────────────────────────────── *@
+    <aside class="admin-sidebar">
+        <div class="admin-sidebar-inner">
+
+            <a class="admin-brand" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                <span class="admin-brand-mark">
+                    <svg viewBox="-160 -160 320 320" aria-hidden="true">
+                        @for (int r = 0; r < 5; r++) {
+                            <g transform="rotate(@(r * 72)) translate(0 -10)">
+                                <path d="M 0 0 C -36 -28 -44 -78 -22 -118 C -10 -140 10 -140 22 -118 C 44 -78 36 -28 0 0 Z" fill="#c2410c"/>
+                            </g>
+                        }
+                        <circle cx="0" cy="0" r="18" fill="rgba(253,250,242,0.15)"/>
+                        <circle cx="0" cy="0" r="8"  fill="#b8841f"/>
+                    </svg>
+                </span>
+                <span class="admin-brand-text">
+                    <span class="admin-brand-name">CIS Connect</span>
+                    <span class="admin-brand-sub">Admin Panel</span>
+                </span>
+            </a>
+
+            <nav class="admin-nav" aria-label="Admin navigation">
+                <span class="admin-nav-label">Content</span>
+
+                <a class="admin-nav-link @(ctrl == "Dashboard" ? "active" : "")"
+                   asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                    <svg class="admin-nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="2" width="7" height="7" rx="1.5"/>
+                        <rect x="11" y="2" width="7" height="7" rx="1.5"/>
+                        <rect x="2" y="11" width="7" height="7" rx="1.5"/>
+                        <rect x="11" y="11" width="7" height="7" rx="1.5"/>
+                    </svg>
+                    Dashboard
+                </a>
+
+                <a class="admin-nav-link @(ctrl == "Posts" ? "active" : "")"
+                   asp-area="Admin" asp-controller="Posts" asp-action="Index">
+                    <svg class="admin-nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="14" height="14" rx="2"/>
+                        <line x1="6" y1="7" x2="14" y2="7"/>
+                        <line x1="6" y1="10" x2="14" y2="10"/>
+                        <line x1="6" y1="13" x2="10" y2="13"/>
+                    </svg>
+                    Posts
+                </a>
+
+                <a class="admin-nav-link @(ctrl == "Guides" ? "active" : "")"
+                   asp-area="Admin" asp-controller="Guides" asp-action="Index">
+                    <svg class="admin-nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 3h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1z"/>
+                        <line x1="7" y1="7" x2="13" y2="7"/>
+                        <line x1="7" y1="10" x2="13" y2="10"/>
+                        <line x1="7" y1="13" x2="10" y2="13"/>
+                        <path d="M7 3v14"/>
+                    </svg>
+                    Guides
+                </a>
+
+                <a class="admin-nav-link @(ctrl == "Universities" ? "active" : "")"
+                   asp-area="Admin" asp-controller="Universities" asp-action="Index">
+                    <svg class="admin-nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M10 2L2 7h16L10 2z"/>
+                        <rect x="4" y="10" width="3" height="5"/>
+                        <rect x="8.5" y="10" width="3" height="5"/>
+                        <rect x="13" y="10" width="3" height="5"/>
+                        <line x1="2" y1="17" x2="18" y2="17"/>
+                    </svg>
+                    Universities
+                </a>
+
+                <a class="admin-nav-link @(ctrl == "Faq" ? "active" : "")"
+                   asp-area="Admin" asp-controller="Faq" asp-action="Index">
+                    <svg class="admin-nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="10" cy="10" r="8"/>
+                        <path d="M10 14v-1"/>
+                        <path d="M10 11c0-2 3-2 3-4a3 3 0 00-6 0"/>
+                    </svg>
+                    FAQ
+                </a>
+            </nav>
+
+            <div class="admin-sidebar-footer">
+                <a class="admin-nav-link" href="/" target="_blank">
+                    <svg class="admin-nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M10 3H4a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1v-6"/>
+                        <path d="M14 3h3v3"/>
+                        <line x1="11" y1="9" x2="17" y2="3"/>
+                    </svg>
+                    View site
+                </a>
+                <form action="/admin/auth/logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="admin-nav-link admin-logout-btn">
+                        <svg class="admin-nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M13 3h4a1 1 0 011 1v12a1 1 0 01-1 1h-4"/>
+                            <polyline points="10 15 14 10 10 5"/>
+                            <line x1="14" y1="10" x2="3" y2="10"/>
+                        </svg>
+                        Sign out
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </aside>
+
+    @* ── Main content ────────────────────────────────────────────── *@
+    <main class="admin-main">
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="admin-toast admin-toast-success" role="alert">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <circle cx="10" cy="10" r="8"/>
+                    <polyline points="7 10 9 12 13 8"/>
+                </svg>
+                @TempData["Success"]
+            </div>
+        }
+
+        @if (TempData["Error"] != null || ViewData["Error"] != null)
+        {
+            <div class="admin-toast admin-toast-error" role="alert">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <circle cx="10" cy="10" r="8"/>
+                    <line x1="10" y1="5.8" x2="10" y2="10.8"/>
+                    <line x1="10" y1="14" x2="10" y2="14.2"/>
+                </svg>
+                @(TempData["Error"] ?? ViewData["Error"])
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+
+</div>
+
+<script>
+    const toasts = document.querySelectorAll('.admin-toast');
+    toasts.forEach(t => setTimeout(() => t.classList.add('admin-toast-hide'), 3500));
+</script>
+
+</body>
+</html>

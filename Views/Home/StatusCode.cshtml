@@ -1,0 +1,29 @@
+@{
+    var code = ViewData["StatusCode"] as int? ?? 0;
+    var is404 = code == 404;
+
+    ViewData["Title"] = is404 ? "Page Not Found" : "Something went wrong";
+
+    var headline  = is404 ? "404" : code > 0 ? code.ToString() : "Error";
+    var subline   = is404 ? "Page not found" : "Something went wrong";
+    var message   = is404
+        ? "The page you're looking for doesn't exist or has been moved. Try searching for what you need."
+        : "An unexpected error occurred. If this keeps happening, check back shortly or use the navigation above.";
+}
+
+<section class="utility-page error-page">
+    <div class="container">
+        <div class="error-block" data-reveal>
+            <span class="error-code mono">@headline</span>
+            <h1>@subline</h1>
+            <p>@message</p>
+            <div class="error-actions">
+                <a class="soft-button" asp-controller="Updates" asp-action="Index">← Back to Home</a>
+                @if (is404)
+                {
+                    <a class="soft-button" asp-controller="Search" asp-action="Index">Search</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

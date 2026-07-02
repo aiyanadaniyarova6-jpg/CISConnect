@@ -1,0 +1,207 @@
+@model FAQViewModel
+
+@{
+    ViewData["Title"] = "Q&A";
+    var categories = Model.Items.Select(i => i.Category).Distinct().OrderBy(c => c).ToList();
+    var allItems = Model.Items.ToList();
+    int idx = 0;
+}
+
+<section class="section faq-section">
+    <div class="container">
+
+        @* heading *@
+        <div class="section-head" data-reveal>
+            <span class="eyebrow" style="display:block;margin-bottom:14px;grid-column:1/-1;">Questions & answers</span>
+            <h1 class="section-title">
+                Common<br/><em>questions</em>
+            </h1>
+            <p class="section-lede">
+                Everything CIS students ask about visas, arrival, university
+                life and support — in one searchable place.
+            </p>
+        </div>
+
+        @* search *@
+        <div class="faq-search" data-reveal>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input
+                id="faqSearchInput"
+                type="text"
+                placeholder="Search questions — visa, SIM, accommodation…"
+                autocomplete="off"
+                aria-label="Search FAQ"
+                value="@Model.SearchTerm" />
+            <span class="faq-count" id="faqCount">@allItems.Count results</span>
+            <button class="faq-clear" id="faqClearBtn" type="button" aria-label="Clear search">Clear</button>
+        </div>
+
+        @* category chips *@
+        <div class="filter-bar" role="group" aria-label="FAQ categories">
+            <span class="lbl">Category</span>
+            <button class="chip active" type="button" data-faq-cat="all">All <span class="count">@allItems.Count</span></button>
+            @foreach (var cat in categories)
+            {
+                var cnt = allItems.Count(i => i.Category == cat);
+                <button class="chip" type="button" data-faq-cat="@cat.ToLower()">
+                    @cat <span class="count">@cnt</span>
+                </button>
+            }
+        </div>
+
+        @* accordion *@
+        <div class="faq-grid" id="faqGrid">
+
+            @if (!allItems.Any())
+            {
+                <div class="faq-empty" id="faqEmpty">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <p>No questions match your search. Try a different keyword.</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var item in allItems)
+                {
+                    idx++;
+                    <div class="faq-item"
+                         data-reveal
+                         data-faq-category="@item.Category.ToLower()">
+                        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+                            <span class="num">@idx.ToString("D2")</span>
+                            <h4>@item.Question</h4>
+                            <span class="faq-cat-label">@item.Category</span>
+                            <div class="faq-toggle" aria-hidden="true"></div>
+                        </div>
+                        <div class="faq-a" role="region">
+                            <div>
+                                <p>@item.Answer</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @* empty state (hidden by default) *@
+                <div class="faq-empty" id="faqEmptyFiltered" style="display:none;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <p>No questions match your search. <button class="faq-clear" type="button" id="faqClearBtn2">Reset filters</button></p>
+                </div>
+            }
+
+        </div>
+
+        @* still have questions? *@
+        <div style="margin-top:80px;padding:40px;background:rgba(194,65,12,0.04);border-radius:12px;border:1px solid rgba(194,65,12,0.1);" data-reveal>
+            <span class="eyebrow" style="margin-bottom:16px;display:inline-flex;">Still have questions?</span>
+            <p style="font-size:16px;color:var(--ink-700);margin:12px 0 24px;">
+                Check the
+                <a asp-controller="Menu" asp-action="Contacts" style="color:var(--hibiscus);font-weight:500;">Important Contacts</a>
+                page for direct support lines, or explore the
+                <a asp-controller="Menu" asp-action="PreArrival" style="color:var(--hibiscus);font-weight:500;">Pre-Arrival guide</a>
+                for step-by-step help.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="section-motif" aria-hidden="true">
+        @{
+            ViewData["HibiscusVariant"] = "stroke";
+            ViewData["HibiscusAnimated"] = false;
+        }
+        @await Html.PartialAsync("_Hibiscus")
+    </div>
+</section>
+
+@* ── Write to us ───────────────────────────────────────────────────────────── *@
+<section style="background:var(--paper);padding:80px 0 100px;">
+    <div class="container" style="max-width:720px;">
+    @{
+        var contactSent = TempData["ContactSent"] as bool? ?? false;
+        var contactError = TempData["ContactError"] as bool? ?? false;
+    }
+    <div data-reveal>
+        <span class="eyebrow" style="margin-bottom:12px;display:block;">Didn't find an answer?</span>
+        <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:400;letter-spacing:-0.025em;margin:0 0 12px;">
+            Write to <em>us</em>
+        </h2>
+        <p style="font-size:16px;line-height:1.7;color:var(--ink-700);margin:0 0 36px;">
+            Send us your question directly — we read every message and respond personally.
+        </p>
+
+        @if (contactSent)
+        {
+            <div style="padding:24px 28px;background:rgba(21,128,61,0.06);border:1px solid rgba(21,128,61,0.2);border-radius:12px;display:flex;align-items:center;gap:16px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <p style="margin:0;font-size:15px;color:var(--ink-900);">Message sent — we'll get back to you soon!</p>
+            </div>
+        }
+        else
+        {
+            @if (contactError)
+            {
+                <div style="padding:16px 20px;background:rgba(194,65,12,0.06);border:1px solid rgba(194,65,12,0.2);border-radius:12px;color:var(--hibiscus);font-size:14px;margin-bottom:24px;">
+                    Something went wrong. Please try again.
+                </div>
+            }
+            <form action="/Contact" method="post" style="display:flex;flex-direction:column;gap:16px;">
+                @Html.AntiForgeryToken()
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div>
+                        <label style="display:block;font-size:12px;font-family:var(--font-mono);color:var(--ink-500);margin-bottom:6px;letter-spacing:0.05em;text-transform:uppercase;">Your name</label>
+                        <input name="Name" required maxlength="100"
+                               style="width:100%;padding:12px 14px;background:var(--surface);border:1px solid rgba(10,14,31,0.12);border-radius:10px;font-size:15px;font-family:var(--font-body);color:var(--ink-900);outline:none;box-sizing:border-box;"
+                               placeholder="Aiyana" />
+                    </div>
+                    <div>
+                        <label style="display:block;font-size:12px;font-family:var(--font-mono);color:var(--ink-500);margin-bottom:6px;letter-spacing:0.05em;text-transform:uppercase;">Your email</label>
+                        <input name="Email" type="email" required maxlength="200"
+                               style="width:100%;padding:12px 14px;background:var(--surface);border:1px solid rgba(10,14,31,0.12);border-radius:10px;font-size:15px;font-family:var(--font-body);color:var(--ink-900);outline:none;box-sizing:border-box;"
+                               placeholder="you@example.com" />
+                    </div>
+                </div>
+                <div>
+                    <label style="display:block;font-size:12px;font-family:var(--font-mono);color:var(--ink-500);margin-bottom:6px;letter-spacing:0.05em;text-transform:uppercase;">Subject</label>
+                    <input name="Subject" required maxlength="200"
+                           style="width:100%;padding:12px 14px;background:var(--surface);border:1px solid rgba(10,14,31,0.12);border-radius:10px;font-size:15px;font-family:var(--font-body);color:var(--ink-900);outline:none;box-sizing:border-box;"
+                           placeholder="Question about documents..." />
+                </div>
+                <div>
+                    <label style="display:block;font-size:12px;font-family:var(--font-mono);color:var(--ink-500);margin-bottom:6px;letter-spacing:0.05em;text-transform:uppercase;">Message</label>
+                    <textarea name="Message" required maxlength="2000" rows="5"
+                              style="width:100%;padding:12px 14px;background:var(--surface);border:1px solid rgba(10,14,31,0.12);border-radius:10px;font-size:15px;font-family:var(--font-body);color:var(--ink-900);outline:none;resize:vertical;box-sizing:border-box;line-height:1.6;"
+                              placeholder="Write your question here..."></textarea>
+                </div>
+                <div>
+                    <button type="submit"
+                            style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;background:var(--hibiscus);color:#fff;border:none;border-radius:99px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--font-body);">
+                        Send message ↗
+                    </button>
+                </div>
+            </form>
+        }
+    </div>
+    </div>
+</section>
+
+@section Scripts {
+<script>
+// Wire up secondary clear button
+var btn2 = document.getElementById('faqClearBtn2');
+if (btn2) btn2.addEventListener('click', function () {
+    document.getElementById('faqClearBtn').click();
+});
+// Keyboard accessibility for faq-q
+document.querySelectorAll('.faq-q').forEach(function (q) {
+    q.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); q.click(); }
+    });
+});
+</script>
+}

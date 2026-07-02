@@ -1,0 +1,54 @@
+@model CISConnect.Models.FAQItem
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow"><a asp-area="Admin" asp-controller="Faq" asp-action="Index">FAQ</a> / New</span>
+        <h2 class="admin-page-title">New FAQ item</h2>
+    </div>
+</div>
+
+<form action="/admin/faq/create" method="post" class="admin-form">
+    @Html.AntiForgeryToken()
+
+    <div class="admin-form-grid">
+        <div class="admin-form-main">
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Question">Question <span class="admin-required">*</span></label>
+                <input class="admin-input" asp-for="Question" placeholder="e.g. How do I apply for a student visa?" />
+                <span class="admin-validation" asp-validation-for="Question"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="Answer">Answer</label>
+                <textarea class="admin-input admin-textarea-lg" asp-for="Answer" placeholder="Detailed answer…" rows="10"></textarea>
+            </div>
+
+        </div>
+
+        <div class="admin-form-side">
+
+            <div class="admin-panel">
+                <span class="admin-panel-title">Settings</span>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="Category">Category <span class="admin-required">*</span></label>
+                    <input class="admin-input" asp-for="Category" placeholder="e.g. Visa, Housing, Studies…" />
+                    <span class="admin-validation" asp-validation-for="Category"></span>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label" asp-for="DisplayOrder">Display order</label>
+                    <input class="admin-input" asp-for="DisplayOrder" type="number" min="0" placeholder="0" />
+                    <span class="admin-hint">Lower number = shown first within category.</span>
+                </div>
+            </div>
+
+            <div class="admin-form-actions">
+                <button class="admin-btn admin-btn-primary" type="submit">Add FAQ item</button>
+                <a class="admin-btn admin-btn-ghost" asp-area="Admin" asp-controller="Faq" asp-action="Index">Cancel</a>
+            </div>
+
+        </div>
+    </div>
+</form>

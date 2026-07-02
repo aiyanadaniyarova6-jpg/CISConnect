@@ -1,0 +1,66 @@
+<footer class="site-footer">
+    <div class="container">
+
+        @* Massive type — "CIS" cycles through country names *@
+        <div class="footer-massive">
+            <span class="footer-cycle-wrap" aria-live="polite">
+                <span class="footer-cycle-word visible" id="footerCycleWord">CIS</span>
+            </span>
+            <br/><em>Connect</em>
+        </div>
+
+        @* Grid *@
+        <div class="footer-grid">
+            <div>
+                <h4>About</h4>
+                <p style="font-size:14px;opacity:.75;line-height:1.6;max-width:320px;">
+                    Centralized guidance for CIS students preparing for,
+                    arriving in, and settling into life in Malaysia.
+                </p>
+            </div>
+
+            <div>
+                <h4>Platform</h4>
+                <ul>
+                    <li><a asp-controller="Updates"     asp-action="Index">Home Feed</a></li>
+                    <li><a asp-controller="Menu"        asp-action="PreArrival">Pre-Arrival</a></li>
+                    <li><a asp-controller="Menu"        asp-action="ArrivalSetup">Arrival &amp; Setup</a></li>
+                    <li><a asp-controller="Menu"        asp-action="LivingInMalaysia">Living in Malaysia</a></li>
+                    <li><a asp-controller="Menu"        asp-action="CISCommunity">CIS Community</a></li>
+                    <li><a asp-controller="Menu"        asp-action="Deals">Deals &amp; Tips</a></li>
+                    <li><a asp-controller="Menu"        asp-action="Contacts">Important Contacts</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4>Universities</h4>
+                <ul>
+                    <li><a asp-controller="Universities" asp-action="Index">All Universities</a></li>
+                    <li><a asp-controller="Universities" asp-action="Details" asp-route-id="1">Xiamen (XMUM)</a></li>
+                    <li><a asp-controller="Universities" asp-action="Details" asp-route-id="2">APU</a></li>
+                    <li><a asp-controller="Universities" asp-action="Details" asp-route-id="3">Sunway</a></li>
+                    <li><a asp-controller="Universities" asp-action="Details" asp-route-id="4">Taylor's</a></li>
+                    <li><a asp-controller="Universities" asp-action="Details" asp-route-id="5">UCSI</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4>Resources</h4>
+                <ul>
+                    <li><a asp-controller="FAQ"  asp-action="Index">Q&amp;A / FAQ</a></li>
+                    <li><a asp-controller="Home" asp-action="About">About the Project</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>&copy; @DateTime.Now.Year CIS Connect — Student Support Platform</span>
+            <div style="display:flex;gap:24px;">
+                <a asp-controller="Updates" asp-action="Index">Home</a>
+                <a asp-controller="FAQ"     asp-action="Index">Q&amp;A</a>
+                <a asp-controller="Home"    asp-action="About">About</a>
+            </div>
+        </div>
+
+    </div>
+</footer>

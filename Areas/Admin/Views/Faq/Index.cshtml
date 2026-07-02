@@ -1,0 +1,53 @@
+@model IEnumerable<CISConnect.Models.FAQItem>
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow">Content</span>
+        <h2 class="admin-page-title">FAQ <span class="admin-count">@Model.Count()</span></h2>
+    </div>
+    <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Faq" asp-action="Create">
+        + New item
+    </a>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Category</th>
+                <th>Order</th>
+                <th class="admin-th-actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td class="admin-td-title">
+                        <span class="admin-td-name">@f.Question</span>
+                        @if (!string.IsNullOrWhiteSpace(f.Answer))
+                        {
+                            <span class="admin-td-sub">@(f.Answer.Length > 80 ? f.Answer[..80] + "…" : f.Answer)</span>
+                        }
+                    </td>
+                    <td><span class="admin-badge">@f.Category</span></td>
+                    <td class="admin-td-mono">@f.DisplayOrder</td>
+                    <td class="admin-td-actions">
+                        <a class="admin-action-link" asp-area="Admin" asp-controller="Faq" asp-action="Edit" asp-route-id="@f.Id">Edit</a>
+                        <form action="/admin/faq/delete" method="post" class="admin-inline-form"
+                              onsubmit="return confirm('Delete this FAQ item?')">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@f.Id" />
+                            <button type="submit" class="admin-action-link admin-action-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any())
+    {
+        <div class="admin-empty">No FAQ items yet. <a asp-area="Admin" asp-controller="Faq" asp-action="Create">Add one →</a></div>
+    }
+</div>

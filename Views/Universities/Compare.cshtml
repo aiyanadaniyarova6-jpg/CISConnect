@@ -1,0 +1,200 @@
+@model IEnumerable<University>
+@using System.Text.Json
+@using System.Text.RegularExpressions
+
+@{
+    ViewData["Title"] = "Compare Universities";
+    var universities = Model.ToList();
+
+    var compareItems = universities.Select(university => new
+    {
+        id = university.Id,
+        name = university.Name,
+        shortName = ShortName(university.Name),
+        logoUrl = LogoUrl(university.Name),
+        logoAlt = $"{university.Name} logo",
+        location = university.Location,
+        description = university.Description,
+        website = university.CampusMapLink,
+        overview = ShortText(GetSection(university, "Overview")?.Content, 260),
+        programs = ShortText(GetSection(university, "Programs")?.Content, 240),
+        requirements = ShortText(GetSection(university, "Requirements")?.Content, 220),
+        deadlines = ShortText(GetSection(university, "Deadlines")?.Content, 220),
+        fees = ShortText(GetSection(university, "Fees & Prices")?.Content, 220),
+        scholarships = ShortText(GetSection(university, "Scholarships")?.Content, 220),
+        housing = ShortText(GetSection(university, "Housing")?.Content, 220),
+        contacts = ShortText(GetSection(university, "Useful Contacts")?.Content, 180),
+        detailsUrl = Url.Action("Details", "Universities", new { id = university.Id })
+    }).ToList();
+}
+
+@functions {
+    private static UniversitySection? GetSection(University university, string sectionType)
+    {
+        return university.Sections.FirstOrDefault(section => section.SectionType == sectionType);
+    }
+
+    private static string ShortName(string name)
+    {
+        return name switch
+        {
+            "Asia Pacific University (APU)" => "APU",
+            "Xiamen University Malaysia" => "XMUM",
+            "Sunway University" => "Sunway",
+            "Taylor's University" => "Taylor's",
+            "UCSI University" => "UCSI",
+            _ => name.Split(' ', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "UNI"
+        };
+    }
+
+    private static string LogoUrl(string name)
+    {
+        return name switch
+        {
+            "Asia Pacific University (APU)" => "/images/logos/APU_logo.png",
+            "Xiamen University Malaysia" => "/images/logos/XMUM_logo.avif",
+            "Sunway University" => "/images/logos/Sunway_logo.avif",
+            "Taylor's University" => "/images/logos/Taylors_logo.png",
+            "UCSI University" => "/images/logos/UCSI_logo.png",
+            _ => ""
+        };
+    }
+
+    private static string ShortText(string? html, int maxLength)
+    {
+        if (string.IsNullOrWhiteSpace(html))
+        {
+            return "Information is being prepared.";
+        }
+
+        var text = Regex.Replace(html, "<.*?>", " ");
+        text = Regex.Replace(text, "\\s+", " ").Trim();
+
+        if (text.Length <= maxLength)
+        {
+            return text;
+        }
+
+        return text[..maxLength].TrimEnd() + "...";
+    }
+}
+
+<section class="section compare-section">
+    <div class="container">
+        <a asp-controller="Universities" asp-action="Index" class="eyebrow uni-back-link" data-reveal>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0">
+                <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All universities
+        </a>
+
+        <div class="compare-hero" data-reveal>
+            <p class="eyebrow">Side-by-side chooser</p>
+            <h1>Compare two <em>universities</em></h1>
+            <p>
+                Choose any two universities and scan the important student details
+                together: programmes, fees, scholarships, housing, requirements,
+                deadlines, and support links.
+            </p>
+        </div>
+
+        <div class="compare-tool" data-compare-tool>
+            <div class="compare-select-row" aria-label="Choose universities to compare">
+                <label class="compare-select-box">
+                    <span>First choice</span>
+                    <select data-compare-select="left">
+                        @foreach (var university in universities)
+                        {
+                            <option value="@university.Id">@university.Name</option>
+                        }
+                    </select>
+                </label>
+
+                <div class="compare-versus" aria-hidden="true">vs</div>
+
+                <label class="compare-select-box">
+                    <span>Second choice</span>
+                    <select data-compare-select="right">
+                        @foreach (var university in universities)
+                        {
+                            <option value="@university.Id">@university.Name</option>
+                        }
+                    </select>
+                </label>
+            </div>
+
+            <div class="compare-columns">
+                <article class="compare-column" data-compare-column="left">
+                    <div class="compare-university-header">
+                        <span class="compare-logo">
+                            <img data-field-src="logoUrl" data-field-alt="logoAlt" src="" alt="" />
+                        </span>
+                        <h2 data-field="name">University</h2>
+                        <p data-field="location">Location</p>
+                    </div>
+                    <p class="compare-description" data-field="description"></p>
+                    <a class="compare-open-link" data-field-link="detailsUrl" href="#">Open guide →</a>
+                </article>
+
+                <article class="compare-column" data-compare-column="right">
+                    <div class="compare-university-header">
+                        <span class="compare-logo">
+                            <img data-field-src="logoUrl" data-field-alt="logoAlt" src="" alt="" />
+                        </span>
+                        <h2 data-field="name">University</h2>
+                        <p data-field="location">Location</p>
+                    </div>
+                    <p class="compare-description" data-field="description"></p>
+                    <a class="compare-open-link" data-field-link="detailsUrl" href="#">Open guide →</a>
+                </article>
+            </div>
+
+            <div class="compare-specs" aria-label="University comparison details">
+                <div class="compare-spec-row">
+                    <h3>Overview</h3>
+                    <p data-compare-value="left" data-field="overview"></p>
+                    <p data-compare-value="right" data-field="overview"></p>
+                </div>
+                <div class="compare-spec-row">
+                    <h3>Programs</h3>
+                    <p data-compare-value="left" data-field="programs"></p>
+                    <p data-compare-value="right" data-field="programs"></p>
+                </div>
+                <div class="compare-spec-row">
+                    <h3>Requirements</h3>
+                    <p data-compare-value="left" data-field="requirements"></p>
+                    <p data-compare-value="right" data-field="requirements"></p>
+                </div>
+                <div class="compare-spec-row">
+                    <h3>Deadlines</h3>
+                    <p data-compare-value="left" data-field="deadlines"></p>
+                    <p data-compare-value="right" data-field="deadlines"></p>
+                </div>
+                <div class="compare-spec-row">
+                    <h3>Fees & Prices</h3>
+                    <p data-compare-value="left" data-field="fees"></p>
+                    <p data-compare-value="right" data-field="fees"></p>
+                </div>
+                <div class="compare-spec-row">
+                    <h3>Scholarships</h3>
+                    <p data-compare-value="left" data-field="scholarships"></p>
+                    <p data-compare-value="right" data-field="scholarships"></p>
+                </div>
+                <div class="compare-spec-row">
+                    <h3>Housing</h3>
+                    <p data-compare-value="left" data-field="housing"></p>
+                    <p data-compare-value="right" data-field="housing"></p>
+                </div>
+                <div class="compare-spec-row">
+                    <h3>Support</h3>
+                    <p data-compare-value="left" data-field="contacts"></p>
+                    <p data-compare-value="right" data-field="contacts"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script id="compareUniversityData" type="application/json">
+@Html.Raw(JsonSerializer.Serialize(compareItems))
+</script>

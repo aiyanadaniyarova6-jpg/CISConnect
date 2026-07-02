@@ -1,0 +1,66 @@
+@model IEnumerable<CISConnect.Models.UpdatePost>
+
+<div class="admin-page-head">
+    <div>
+        <span class="admin-eyebrow">Content</span>
+        <h2 class="admin-page-title">Posts <span class="admin-count">@Model.Count()</span></h2>
+    </div>
+    <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Posts" asp-action="Create">
+        + New post
+    </a>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Published</th>
+                <th>Highlighted</th>
+                <th>Media</th>
+                <th class="admin-th-actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var post in Model)
+            {
+                <tr>
+                    <td class="admin-td-title">
+                        <span class="admin-td-name">@post.Title</span>
+                        @if (!string.IsNullOrWhiteSpace(post.Summary))
+                        {
+                            <span class="admin-td-sub">@(post.Summary.Length > 80 ? post.Summary[..80] + "…" : post.Summary)</span>
+                        }
+                    </td>
+                    <td><span class="admin-badge">@post.Category</span></td>
+                    <td class="admin-td-mono">@post.PublishedAt.ToString("dd MMM yyyy")</td>
+                    <td>
+                        @if (post.IsHighlighted)
+                        {
+                            <span class="admin-badge admin-badge-hibiscus">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="admin-badge admin-badge-muted">—</span>
+                        }
+                    </td>
+                    <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(post.MediaType) ? "—" : post.MediaType)</td>
+                    <td class="admin-td-actions">
+                        <a class="admin-action-link" asp-area="Admin" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+                        <form action="/admin/posts/delete" method="post" class="admin-inline-form"
+                              onsubmit="return confirm('Delete «@post.Title»?')">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@post.Id" />
+                            <button type="submit" class="admin-action-link admin-action-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any())
+    {
+        <div class="admin-empty">No posts yet. <a asp-area="Admin" asp-controller="Posts" asp-action="Create">Create the first one →</a></div>
+    }
+</div>
