@@ -45,7 +45,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("DefaultConnection string not found. Set it via User Secrets or an environment variable.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36))));
 
 // Admin-only panel: relaxed password policy, no email confirmation needed.
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
