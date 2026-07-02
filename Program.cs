@@ -69,6 +69,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // Rate limiting: cap the live-search endpoint to 40 requests per 10 seconds per client.
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddSingleton<IImageStorageService, CloudinaryImageStorageService>();
 
 builder.Services.AddOutputCache(options =>
 {

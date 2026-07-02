@@ -1,5 +1,6 @@
 using CISConnect.Data;
 using CISConnect.Models;
+using CISConnect.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +13,12 @@ namespace CISConnect.Areas.Admin.Controllers;
 public class PostsController : Controller
 {
     private readonly ApplicationDbContext _db;
-    private readonly IWebHostEnvironment _env;
+    private readonly IImageStorageService _storage;
 
-    public PostsController(ApplicationDbContext db, IWebHostEnvironment env)
+    public PostsController(ApplicationDbContext db, IImageStorageService storage)
     {
         _db = db;
-        _env = env;
+        _storage = storage;
     }
 
     [HttpGet("")]
@@ -39,7 +40,7 @@ public class PostsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(UpdatePost post, IFormFile? imageFile)
     {
-        var uploaded = await TrySaveImageAsync(imageFile);
+        var uploaded = await _storage.UploadAsync(imageFile!);
         if (uploaded is not null)
         {
             post.MediaUrl = uploaded;
@@ -74,7 +75,7 @@ public class PostsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(UpdatePost post, IFormFile? imageFile)
     {
-        var uploaded = await TrySaveImageAsync(imageFile);
+        var uploaded = await _storage.UploadAsync(imageFile!);
         if (uploaded is not null)
         {
             post.MediaUrl = uploaded;
@@ -108,27 +109,6 @@ public class PostsController : Controller
             TempData["Success"] = $"Post \"{post.Title}\" deleted.";
         }
         return RedirectToAction(nameof(Index));
-    }
-
-    // Saves uploaded image to /uploads/posts/, returns its URL or null if no file / bad extension.
-    private async Task<string?> TrySaveImageAsync(IFormFile? file)
-    {
-        if (file is null || file.Length == 0) return null;
-
-        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
-        var allowed = new[] { ".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif" };
-        if (!allowed.Contains(ext)) return null;
-
-        var uploadsDir = Path.Combine(_env.WebRootPath, "uploads", "posts");
-        Directory.CreateDirectory(uploadsDir);
-
-        var fileName = $"{Guid.NewGuid()}{ext}";
-        var filePath = Path.Combine(uploadsDir, fileName);
-
-        await using var stream = new FileStream(filePath, FileMode.Create);
-        await file.CopyToAsync(stream);
-
-        return $"/uploads/posts/{fileName}";
     }
 
     // Strips leading/trailing spaces from all text fields before saving.
