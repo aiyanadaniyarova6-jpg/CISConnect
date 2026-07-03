@@ -1,4 +1,5 @@
 using CISConnect.Models;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -6,11 +7,13 @@ using Microsoft.EntityFrameworkCore;
 namespace CISConnect.Data;
 
 // Main database context — extends Identity so admin users share the same DB.
-public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IDataProtectionKeyContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
+
+    public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
 
     public DbSet<UpdatePost> UpdatePosts => Set<UpdatePost>();
     public DbSet<MenuSection> MenuSections => Set<MenuSection>();
