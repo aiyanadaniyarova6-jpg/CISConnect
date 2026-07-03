@@ -9,15 +9,14 @@ using Serilog;
 using System.Threading.RateLimiting;
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Warning()
-    .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
-    .Enrich.FromLogContext()
+    .MinimumLevel.Debug()
     .WriteTo.Console()
-    .WriteTo.File("logs/cisconnect-.log",
-        rollingInterval: RollingInterval.Day,
-        retainedFileCountLimit: 14,
-        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
     .CreateLogger();
+
+try
+{
+
+Log.Information("Starting CISConnect application");
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
@@ -148,3 +147,13 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 app.Run();
+
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}
