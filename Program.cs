@@ -137,6 +137,15 @@ app.Use(async (ctx, next) =>
     ctx.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     ctx.Response.Headers["X-XSS-Protection"] = "0";
     ctx.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
+
+    // Never cache admin pages — otherwise a redirect after create/edit/delete can be
+    // served from the browser cache without the TempData success/error banner.
+    if (ctx.Request.Path.StartsWithSegments("/admin"))
+    {
+        ctx.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate";
+        ctx.Response.Headers["Pragma"] = "no-cache";
+    }
+
     await next();
 });
 
