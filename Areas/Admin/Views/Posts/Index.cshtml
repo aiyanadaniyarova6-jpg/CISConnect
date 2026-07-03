@@ -48,8 +48,7 @@
                     <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(post.MediaType) ? "—" : post.MediaType)</td>
                     <td class="admin-td-actions">
                         <a class="admin-action-link" asp-area="Admin" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
-                        <form action="/admin/posts/delete" method="post" class="admin-inline-form"
-                              onsubmit="return confirm('Delete «@post.Title»?')">
+                        <form action="/admin/posts/delete" method="post" class="admin-inline-form">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@post.Id" />
                             <button type="submit" class="admin-action-link admin-action-delete">Delete</button>

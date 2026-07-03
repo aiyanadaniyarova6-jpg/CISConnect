@@ -3274,7 +3274,7 @@ main { flex: 1; }
 }
 
 /* ── 20. MENU SECTION PAGE (individual guide pages) ──────────────────────── */
-.guide-section { padding: 120px 0 100px; background: var(--surface); }
+.guide-section { padding: 100px 0 100px; background: var(--surface); }
 .guide-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -3283,13 +3283,13 @@ main { flex: 1; }
 .guide-main {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 440px);
-  gap: 56px;
+  gap: 48px;
   align-items: center;
-  margin-bottom: 34px;
+  margin-bottom: 22px;
 }
 .guide-header {
   margin-bottom: 0;
-  padding-bottom: 40px;
+  padding-bottom: 26px;
   border-bottom: 1px solid rgba(10,14,31,0.12);
 }
 .guide-title {
@@ -3368,7 +3368,7 @@ main { flex: 1; }
 .guide-visual {
   --guide-scroll-y: 0px;
   position: relative;
-  min-height: 430px;
+  min-height: 360px;
   border-radius: 32px;
   overflow: hidden;
   border: 1px solid rgba(10,14,31,0.08);
@@ -3530,41 +3530,44 @@ main { flex: 1; }
   transition: transform 0.3s var(--ease-out-expo), color 0.2s;
 }
 @media (max-width: 1050px) {
+  .guide-layout { gap: 36px; }
   .guide-main {
     grid-template-columns: 1fr;
-    gap: 34px;
+    gap: 22px;
+    margin-bottom: 0;
   }
   .guide-header { margin-bottom: 0; }
   .guide-visual {
-    min-height: 320px;
+    min-height: 240px;
     max-width: 560px;
   }
-  .guide-visual-symbol { font-size: clamp(100px, 28vw, 170px); }
+  .guide-visual-symbol { font-size: clamp(90px, 22vw, 140px); }
 }
 @media (max-width: 760px) {
-  .guide-section { padding-top: 120px; }
-  .guide-main { gap: 24px; }
+  .guide-section { padding-top: 100px; }
+  .guide-layout { gap: 24px; }
+  .guide-main { gap: 18px; }
   .guide-header {
     margin-bottom: 0;
-    padding-bottom: 32px;
+    padding-bottom: 22px;
   }
   .guide-visual {
-    min-height: 260px;
+    min-height: 190px;
     border-radius: 24px;
   }
   .guide-visual-kicker {
-    top: 26px;
-    left: 26px;
+    top: 20px;
+    left: 20px;
     font-size: 10px;
   }
   .guide-visual-label {
-    left: 24px;
-    bottom: 24px;
-    min-height: 48px;
-    font-size: 23px;
+    left: 20px;
+    bottom: 16px;
+    min-height: 40px;
+    font-size: 19px;
   }
   .guide-visual-image {
-    width: min(270px, 72%);
+    width: min(220px, 64%);
     right: 0;
   }
   .guide-visual-living .guide-visual-image {
