@@ -529,13 +529,13 @@
     });
   });
 
-  /* ── University filter chips (guide pages) ─────────────────── */
+  /* ── Guide filter chips (university or country, depending on section) ─── */
   document.querySelectorAll('[data-guide-filter-chip]').forEach(function (chip) {
     chip.addEventListener('click', function () {
       var bar = chip.closest('.guide-filter-bar');
       var guideArea = bar ? bar.parentElement : document;
       var chips = bar ? Array.from(bar.querySelectorAll('[data-guide-filter-chip]')) : [];
-      var cards = Array.from(guideArea.querySelectorAll('[data-guide-university]'));
+      var cards = Array.from(guideArea.querySelectorAll('[data-guide-tag]'));
       var emptyState = guideArea.querySelector('[data-guide-empty-filter]');
       var selected = chip.dataset.guideFilterValue || 'All';
       var visibleCount = 0;
@@ -547,7 +547,7 @@
       });
 
       cards.forEach(function (card) {
-        var match = selected === 'All' || (card.dataset.guideUniversity || '') === selected;
+        var match = selected === 'All' || (card.dataset.guideTag || '') === selected;
         card.classList.toggle('is-filter-hidden', !match);
         if (match) visibleCount++;
       });

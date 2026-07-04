@@ -4,7 +4,13 @@
     var menuSection = Model.Section!;
     ViewData["Title"] = menuSection.Name;
     var articles = Model.Articles.ToList();
-    var shouldGroupByUniversity = menuSection.Slug is "arrival-setup" or "deals-recommendations";
+    var filterMode = menuSection.Slug switch
+    {
+        "arrival-setup" or "deals-recommendations" => "university",
+        "pre-arrival" => "country",
+        _ => "none"
+    };
+    var filterNoun = filterMode == "country" ? "country" : "university";
     var universityFilters = new[]
     {
         new { Label = "All", Value = "All" },
@@ -14,6 +20,18 @@
         new { Label = "Taylor's", Value = "Taylor's" },
         new { Label = "UCSI", Value = "UCSI" }
     };
+    var countryFilters = new[]
+    {
+        new { Label = "All", Value = "All" },
+        new { Label = "Kazakhstan", Value = "Kazakhstan" },
+        new { Label = "Kyrgyzstan", Value = "Kyrgyzstan" },
+        new { Label = "Russia", Value = "Russia" },
+        new { Label = "Tajikistan", Value = "Tajikistan" },
+        new { Label = "Uzbekistan", Value = "Uzbekistan" }
+    };
+    var filterOptions = filterMode == "country" ? countryFilters : universityFilters;
+    string RawTag(GuideArticle article) => (filterMode == "country" ? article.CountryTag : article.UniversityTag) ?? string.Empty;
+    string DisplayTag(GuideArticle article) => string.IsNullOrWhiteSpace(RawTag(article)) ? "General" : RawTag(article).Trim();
     var visualType = menuSection.Slug switch
     {
         "pre-arrival" => "travel",
@@ -90,15 +108,15 @@
         @* ── Article list ─────────────────────────────────────────────────── *@
         @if (articles.Any())
         {
-            @if (shouldGroupByUniversity)
+            @if (filterMode != "none")
             {
-                <div class="guide-filter-bar" role="group" aria-label="Filter @menuSection.Name by university">
+                <div class="guide-filter-bar" role="group" aria-label="Filter @menuSection.Name by @filterNoun">
                     <span class="guide-filter-label">Filter</span>
-                    @foreach (var filter in universityFilters)
+                    @foreach (var filter in filterOptions)
                     {
                         var count = filter.Value == "All"
                             ? articles.Count
-                            : articles.Count(article => string.Equals(article.UniversityTag, filter.Value, StringComparison.OrdinalIgnoreCase));
+                            : articles.Count(article => string.Equals(RawTag(article), filter.Value, StringComparison.OrdinalIgnoreCase));
 
                         <button class="chip guide-filter-chip @(filter.Value == "All" ? "active" : "")"
                                 type="button"
@@ -116,10 +134,10 @@
                 {
                     var article = articles[i];
                     var num = (i + 1).ToString("D2");
-                    var tag = string.IsNullOrWhiteSpace(article.UniversityTag) ? "General" : article.UniversityTag.Trim();
+                    var tag = DisplayTag(article);
                     <a class="guide-item" asp-controller="Post" asp-action="Details"
                        asp-route-id="@($"guide-{article.Id}")"
-                       data-guide-university="@tag"
+                       data-guide-tag="@tag"
                        data-save-card
                        data-save-id="@($"guide-{article.Id}")"
                        data-save-title="@article.Title"
@@ -136,13 +154,13 @@
                         <div>
                             <div class="guide-item-meta" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                                 <span>@menuSection.Name</span>
-                                @if (!string.IsNullOrWhiteSpace(article.UniversityTag))
+                                @if (!string.IsNullOrWhiteSpace(RawTag(article)))
                                 {
-                                    <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--hibiscus);background:rgba(194,65,12,0.09);border:1px solid rgba(194,65,12,0.18);padding:1px 7px;border-radius:4px;">@article.UniversityTag</span>
+                                    <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--hibiscus);background:rgba(194,65,12,0.09);border:1px solid rgba(194,65,12,0.18);padding:1px 7px;border-radius:4px;">@RawTag(article)</span>
                                 }
-                                else if (shouldGroupByUniversity)
+                                else if (filterMode != "none")
                                 {
-                                    <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-500);background:rgba(10,14,31,0.05);border:1px solid rgba(10,14,31,0.1);padding:1px 7px;border-radius:4px;">All universities</span>
+                                    <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-500);background:rgba(10,14,31,0.05);border:1px solid rgba(10,14,31,0.1);padding:1px 7px;border-radius:4px;">All @(filterMode == "country" ? "countries" : "universities")</span>
                                 }
                             </div>
                             <h2 class="guide-item-title">@article.Title</h2>
@@ -161,11 +179,11 @@
                 }
             </div>
 
-            @if (shouldGroupByUniversity)
+            @if (filterMode != "none")
             {
                 <div class="guide-empty-filter" data-guide-empty-filter>
                     <p class="eyebrow">No posts yet</p>
-                    <p>There are no posts for this university yet. Choose another filter or return to All.</p>
+                    <p>There are no posts for this @filterNoun yet. Choose another filter or return to All.</p>
                 </div>
             }
         }

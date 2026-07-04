@@ -54,6 +54,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IDataProtec
             entity.Property(article => article.SourceName).HasMaxLength(200);
             entity.Property(article => article.SourceUrl).HasMaxLength(1000);
             entity.Property(article => article.UniversityTag).HasMaxLength(100);
+            entity.Property(article => article.CountryTag).HasMaxLength(100);
 
             entity.HasOne(article => article.MenuSection)
                 .WithMany(section => section.GuideArticles)

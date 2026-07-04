@@ -12,6 +12,7 @@ public class GuideArticle
     public DateTime? LastVerifiedAt { get; set; }
 
     public string? UniversityTag { get; set; }
+    public string? CountryTag { get; set; }
 
     public int MenuSectionId { get; set; }
     public MenuSection? MenuSection { get; set; }

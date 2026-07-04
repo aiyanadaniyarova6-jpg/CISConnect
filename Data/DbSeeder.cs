@@ -1522,7 +1522,7 @@ public static class DbSeeder
                     <div class="article-video-block">
                         <iframe
                             class="post-media-youtube"
-                            src="https://www.youtube-nocookie.com/embed/aP5MQSGOUY0"
+                            src="https://www.youtube-nocookie.com/embed/iAbdCnIlvkk"
                             title="Student Food Spots: D6, LY3, Lake Cafe, and B1"
                             loading="lazy"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -1583,12 +1583,329 @@ public static class DbSeeder
                 CreatedAt = new DateTime(2026, 5, 15)
             });
 
+        await UpsertGuideArticleAsync(
+            context,
+            "pre-arrival",
+            new GuideArticle
+            {
+                Title = "Pre-Arrival Checklist for CIS Students",
+                Summary = "A practical packing list for CIS students getting ready for Malaysia's climate and daily life.",
+                Content = """
+                    <p>Prepare your passport, student visa documents, university offer letter, accommodation address, and enough Malaysian currency or an international payment option for your first days.</p>
+
+                    <h2>What to actually pack</h2>
+                    <ul>
+                        <li><strong>Medication.</strong> Bring a supply of any prescription medicine you take regularly, plus basics like painkillers and cold medicine in brands you trust. Pharmacies in Malaysia are excellent, but matching your exact medication or dosage can take time in the first weeks.</li>
+                        <li><strong>A light bedding set.</strong> Most hostel and condo rooms come with a mattress but not sheets, a pillowcase, or a blanket. Bring a compact set so you're not sleeping on a bare mattress on night one.</li>
+                        <li><strong>A few warm layers.</strong> Malaysia is tropical outside, but almost every indoor space — lecture halls, libraries, malls, buses — runs air conditioning aggressively cold. A hoodie or light cardigan ends up living in your bag daily, even though you'll never need a winter coat.</li>
+                    </ul>
+
+                    <h2>An honest warning from students who already moved</h2>
+                    <p>No official checklist mentions this, but it deserves one: you will not easily find syrki (glazed curd snacks), grechka, crab-stick chips, or the exact Lay's flavors you grew up with. Malaysia has excellent food — just not that food. If any of these are non-negotiable for your happiness, pack a small stash in your suitcase. Future you, three weeks in, will be very grateful.</p>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "pre-arrival",
+            new GuideArticle
+            {
+                Title = "How to Get Your Malaysia Student Visa: The Full Process",
+                Summary = "A complete step-by-step walkthrough of the EMGS visa process, from your offer letter to landing in Malaysia.",
+                Content = """
+                    <p>Every international student, regardless of nationality, goes through the same government system to study in Malaysia: EMGS (Education Malaysia Global Services). This guide walks through the full process from offer letter to arrival.</p>
+
+                    <h2>Step 1 — Get your offer letter</h2>
+                    <ul>
+                        <li>Apply and get accepted to an MQA-accredited university or college in Malaysia.</li>
+                        <li>Your university will issue an official offer/acceptance letter — this is required before anything else can start.</li>
+                    </ul>
+
+                    <h2>Step 2 — EMGS application and the Visa Approval Letter (VAL)</h2>
+                    <ul>
+                        <li>Your university submits your application to EMGS on the official portal (visa.educationmalaysia.gov.my).</li>
+                        <li>EMGS runs an academic screening, then forwards an approved application to the Immigration Department of Malaysia.</li>
+                        <li>You receive a <strong>Visa Approval Letter (VAL)</strong> — this is the key document. It confirms you're cleared to travel to Malaysia as a student.</li>
+                        <li>Typical processing time is 4–8 weeks, longer for a few nationalities that require extra security clearance, so start early.</li>
+                        <li>Your passport must be valid for at least 18 months from your intended travel date.</li>
+                    </ul>
+
+                    <h2>Step 3 — Check if you need a Single Entry Visa (SEV)</h2>
+                    <p>This is the one step that differs by nationality. Some countries are on EMGS's official SEV-required list — if yours is, you must get a physical visa sticker from a Malaysian embassy or consulate <em>before</em> flying. If your country is not on that list, you travel on your VAL alone and get stamped in on arrival. See the country-specific guide for your nationality for the exact steps.</p>
+
+                    <h2>Step 4 — Before you fly</h2>
+                    <ul>
+                        <li>Print (and save digitally) your VAL, offer letter, and SEV if applicable.</li>
+                        <li>Book flights only after your VAL is confirmed — never before.</li>
+                        <li>Complete the Malaysia Digital Arrival Card (MDAC) online shortly before departure.</li>
+                    </ul>
+
+                    <h2>Step 5 — Arrival and Student Pass</h2>
+                    <ul>
+                        <li>Report to the ISAC (International Student Arrival Centre) counter at KLIA before immigration, as covered in the Arrival & Setup guide.</li>
+                        <li>Complete a Post-Arrival Medical Examination within 7 days of landing.</li>
+                        <li>Once medical results clear, your passport is endorsed with the actual Student Pass sticker, which is what makes your stay legal for the length of your studies.</li>
+                    </ul>
+
+                    <p>Keep every document from this process (VAL, SEV, medical report, Student Pass) — you'll need copies for bank accounts, SIM cards, and visa renewal later.</p>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "pre-arrival",
+            new GuideArticle
+            {
+                Title = "Malaysia Student Visa Process for Kazakhstan Citizens",
+                Summary = "Kazakhstan is on EMGS's Single Entry Visa list — here's what that means for your application.",
+                CountryTag = "Kazakhstan",
+                Content = """
+                    <p>The overall process is the same EMGS system every student goes through (see the full visa guide), but Kazakhstan is currently listed by EMGS as a <strong>Single Entry Visa (SEV) required</strong> country.</p>
+
+                    <h2>What this means for you</h2>
+                    <ul>
+                        <li>After your university submits your application and EMGS issues your Visa Approval Letter (VAL), you cannot simply fly to Malaysia with just the VAL.</li>
+                        <li>You need to take your VAL to the nearest Malaysian embassy or consulate to obtain the physical SEV sticker in your passport before departure.</li>
+                        <li>For students based in Kazakhstan, this is normally arranged through the Malaysian mission covering your region — confirm the exact office and appointment process directly with them, since procedures can change.</li>
+                    </ul>
+
+                    <h2>Good to know</h2>
+                    <ul>
+                        <li>Start the process early — combining EMGS processing time with an embassy SEV appointment can take longer than students expect.</li>
+                        <li>Keep both your VAL and SEV printed and with your passport when you travel; immigration checks both on arrival.</li>
+                        <li>For consular registration and any passport issues once you're in Malaysia, the Embassy of Kazakhstan in Malaysia is your main point of contact.</li>
+                    </ul>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "pre-arrival",
+            new GuideArticle
+            {
+                Title = "Malaysia Student Visa Process for Kyrgyzstan Citizens",
+                Summary = "Kyrgyzstan is not on EMGS's Single Entry Visa list, which simplifies your pre-departure steps.",
+                CountryTag = "Kyrgyzstan",
+                Content = """
+                    <p>The overall process is the same EMGS system every student goes through (see the full visa guide). The good news for Kyrgyzstan citizens: your country is <strong>not</strong> currently on EMGS's Single Entry Visa (SEV) required list.</p>
+
+                    <h2>What this means for you</h2>
+                    <ul>
+                        <li>Once your university and EMGS issue your Visa Approval Letter (VAL), you can travel to Malaysia on that letter alone — no separate embassy visa appointment is needed before flying.</li>
+                        <li>Bring a printed and digital copy of your VAL and present it at Malaysian immigration on arrival, along with your passport.</li>
+                        <li>Kyrgyzstani citizens generally get short-stay visa exemption for entry into Malaysia, but the VAL is still what confirms your student status and purpose of travel — carry it regardless.</li>
+                    </ul>
+
+                    <h2>Good to know</h2>
+                    <ul>
+                        <li>SEV requirements can change, so double-check the current list on the EMGS website close to your travel date rather than relying only on this guide.</li>
+                        <li>You'll still need to complete the Malaysia Digital Arrival Card (MDAC) online before you fly.</li>
+                        <li>For consular matters after arrival, the Embassy of the Kyrgyz Republic in Malaysia is your main point of contact.</li>
+                    </ul>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "pre-arrival",
+            new GuideArticle
+            {
+                Title = "Malaysia Student Visa Process for Russia Citizens",
+                Summary = "Russia is on EMGS's Single Entry Visa list — here's what that means for your application.",
+                CountryTag = "Russia",
+                Content = """
+                    <p>The overall process is the same EMGS system every student goes through (see the full visa guide), but Russia is currently listed by EMGS as a <strong>Single Entry Visa (SEV) required</strong> country.</p>
+
+                    <h2>What this means for you</h2>
+                    <ul>
+                        <li>After your university submits your application and EMGS issues your Visa Approval Letter (VAL), you'll need to obtain a physical SEV sticker in your passport before departure.</li>
+                        <li>Take your VAL to the nearest Malaysian embassy or consulate to apply for the SEV — confirm the current appointment process with them directly, as it can change.</li>
+                        <li>If there's no Malaysian mission near you, check whether a neighboring country's Malaysian embassy handles applications from your region.</li>
+                    </ul>
+
+                    <h2>Good to know</h2>
+                    <ul>
+                        <li>Start early — EMGS processing plus an embassy SEV appointment can take longer than expected, especially during intake peak periods.</li>
+                        <li>Carry both your VAL and SEV, printed and with your passport, when you travel.</li>
+                        <li>For consular registration and passport matters after arrival, the Embassy of Russia in Malaysia is your main point of contact.</li>
+                    </ul>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "pre-arrival",
+            new GuideArticle
+            {
+                Title = "Malaysia Student Visa Process for Tajikistan Citizens",
+                Summary = "Tajikistan is not on EMGS's Single Entry Visa list, which simplifies your pre-departure steps.",
+                CountryTag = "Tajikistan",
+                Content = """
+                    <p>The overall process is the same EMGS system every student goes through (see the full visa guide). The good news for Tajikistan citizens: your country is <strong>not</strong> currently on EMGS's Single Entry Visa (SEV) required list.</p>
+
+                    <h2>What this means for you</h2>
+                    <ul>
+                        <li>Once your university and EMGS issue your Visa Approval Letter (VAL), you can travel to Malaysia on that letter alone — no separate embassy visa appointment is needed before flying.</li>
+                        <li>Bring a printed and digital copy of your VAL and present it at Malaysian immigration on arrival, along with your passport.</li>
+                        <li>The VAL is what confirms your student status and purpose of travel, so keep it accessible, not buried in checked luggage.</li>
+                    </ul>
+
+                    <h2>Good to know</h2>
+                    <ul>
+                        <li>SEV requirements can change, so double-check the current list on the EMGS website close to your travel date rather than relying only on this guide.</li>
+                        <li>You'll still need to complete the Malaysia Digital Arrival Card (MDAC) online before you fly.</li>
+                        <li>For consular matters after arrival, the Embassy of Tajikistan in Malaysia is your main point of contact.</li>
+                    </ul>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "pre-arrival",
+            new GuideArticle
+            {
+                Title = "Malaysia Student Visa Process for Uzbekistan Citizens",
+                Summary = "Uzbekistan is on EMGS's Single Entry Visa list — here's what that means for your application.",
+                CountryTag = "Uzbekistan",
+                Content = """
+                    <p>The overall process is the same EMGS system every student goes through (see the full visa guide), but Uzbekistan is currently listed by EMGS as a <strong>Single Entry Visa (SEV) required</strong> country.</p>
+
+                    <h2>What this means for you</h2>
+                    <ul>
+                        <li>After your university submits your application and EMGS issues your Visa Approval Letter (VAL), you'll need to obtain a physical SEV sticker in your passport before departure.</li>
+                        <li>Take your VAL to the nearest Malaysian embassy or consulate to apply for the SEV — confirm the current appointment process with them directly, as it can change.</li>
+                        <li>Build extra time into your plans for this step, especially if the nearest Malaysian mission is not in your home city.</li>
+                    </ul>
+
+                    <h2>Good to know</h2>
+                    <ul>
+                        <li>Start early — EMGS processing plus an embassy SEV appointment can take longer than expected.</li>
+                        <li>Carry both your VAL and SEV, printed and with your passport, when you travel.</li>
+                        <li>For consular registration and passport matters after arrival, the Embassy of Uzbekistan in Malaysia is your main point of contact.</li>
+                    </ul>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "living-in-malaysia",
+            new GuideArticle
+            {
+                Title = "Everyday Apps: Food Delivery and Online Shopping",
+                Summary = "The apps most students end up using every week for food and shopping in Malaysia.",
+                Content = """
+                    <p>Within the first few days, almost every student ends up installing the same four apps. Getting them set up early saves a lot of hassle.</p>
+
+                    <h2>Food delivery</h2>
+                    <ul>
+                        <li><strong>Grab</strong> — the biggest platform in Malaysia: food delivery (GrabFood), ride-hailing, and its own e-wallet (GrabPay) that many small stalls and vending machines accept. Worth setting up even if you don't order food often.</li>
+                        <li><strong>Foodpanda</strong> — Grab's main competitor, often has different restaurant partners and its own regular promo codes, so it's worth comparing prices between the two before ordering.</li>
+                    </ul>
+
+                    <h2>Online shopping</h2>
+                    <ul>
+                        <li><strong>Shopee</strong> — the most-used shopping app for students: cheap daily essentials, dorm items, electronics accessories, and frequent flash sales.</li>
+                        <li><strong>Lazada</strong> — similar to Shopee, sometimes better for electronics and larger brand items, and useful to check for price comparison before buying.</li>
+                    </ul>
+
+                    <p>Tip: both delivery apps and both shopping apps regularly run new-user and student promo codes, so it's worth checking for a voucher before your first order rather than paying full delivery fee.</p>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "deals-recommendations",
+            new GuideArticle
+            {
+                Title = "Bukit Jalil Food & Discount Spots Near APU",
+                Summary = "Where APU students actually eat and shop around Technology Park Malaysia and Bukit Jalil.",
+                UniversityTag = "APU",
+                Content = """
+                    <p>APU sits inside Technology Park Malaysia (TPM) in Bukit Jalil, and the campus shuttle runs to Bukit Jalil LRT station, which puts a full mall and a wide food scene within easy reach.</p>
+
+                    <h2>Nearby food</h2>
+                    <ul>
+                        <li><strong>Endah Parade</strong> — a shopping mall directly across from Bukit Jalil Sports Complex and the LRT station, with a food court, fast food chains, bookstores, a karaoke centre, futsal courts, and a gym.</li>
+                        <li>Within about a 15-minute walk of TPM you'll also find Ramly Halal Kiosk at Axiata Arena, Cockroach Cafeteria, Picante Café, Subway, and Sri Petaling Seafood Village — a decent spread for both quick halal bites and sit-down meals.</li>
+                    </ul>
+
+                    <h2>Student discounts worth knowing about</h2>
+                    <ul>
+                        <li><strong>Popular Bookstore</strong> — 20% off Popular/Pilihan Popular titles, also valid at HARRIS bookstores and CD-RAMA, especially useful for cheap stationery and textbooks.</li>
+                        <li><strong>GSC Cinemas</strong> — student-priced tickets (as low as RM12 for weekday shows before 6pm) with a valid student ID — good for a cheap study break.</li>
+                        <li><strong>ISIC card</strong> — if you get an International Student Identity Card, it unlocks thousands of extra deals across food, retail, and travel beyond just the campus area.</li>
+                    </ul>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "deals-recommendations",
+            new GuideArticle
+            {
+                Title = "Sunway Pyramid Student Discounts for Sunway University Students",
+                Summary = "How to use Sunway Pyramid and Sunway GEO Avenue for cheap food and real student discounts.",
+                UniversityTag = "Sunway",
+                Content = """
+                    <p>Sunway University sits right inside Sunway City, which means students have direct access to Sunway Pyramid Mall, Sunway GEO Avenue, and Sunway Lagoon without needing transport.</p>
+
+                    <h2>Everyday food</h2>
+                    <ul>
+                        <li>The on-campus cafeteria and the food courts, cafés, and coffee shops around campus keep meal prices around RM5–RM15, and all food served in the campus cafeteria and hostel is halal.</li>
+                        <li>For a change of scenery, Sunway Pyramid and Sunway GEO Avenue are both walkable from campus and have a much wider range of restaurants and food courts.</li>
+                    </ul>
+
+                    <h2>Student discounts worth knowing about</h2>
+                    <ul>
+                        <li><strong>Popular Bookstore</strong> — up to 20% off with a two-year student membership that costs just RM10, useful across multiple visits.</li>
+                        <li><strong>The Face Shop</strong> (Sunway Pyramid) — exclusive student discounts up to 50% off skincare, hair, and nail care products.</li>
+                        <li>Both Sunway Pyramid and Sunway GEO Avenue regularly rotate student promotions across retail stores — it's worth checking in with a valid student ID even at shops that don't advertise a discount.</li>
+                    </ul>
+
+                    <p>Average monthly living costs (food and accommodation) for Sunway students run around RM2,000, though this depends heavily on personal habits and how often you eat off campus.</p>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
+        await UpsertGuideArticleAsync(
+            context,
+            "cis-community",
+            new GuideArticle
+            {
+                Title = "Uzbek Student Community: World Association of Youth Uzbekistan (WAYU)",
+                Summary = "An active Uzbek student community in Malaysia running regular meetups, games, and events.",
+                Content = """
+                    <p>The World Association of Youth Uzbekistan (WAYU) runs an active Uzbek student community in Malaysia. They organize regular meetups and events where students get together to play games, socialize, and support each other outside of university life.</p>
+
+                    <h2>What they do</h2>
+                    <ul>
+                        <li>Regular community meetups and social events for Uzbek students across Malaysia.</li>
+                        <li>Game nights and casual hangouts — a good way to meet other Uzbek students outside your own university.</li>
+                        <li>Community support and information sharing between students.</li>
+                    </ul>
+
+                    <h2>How to join</h2>
+                    <p>Follow their Instagram for event announcements and to see what the community has been up to: <a href="https://www.instagram.com/wayu_malaysia" target="_blank" rel="noopener noreferrer">instagram.com/wayu_malaysia</a>.</p>
+                    """,
+                CreatedAt = new DateTime(2026, 7, 4)
+            });
+
         await context.SaveChangesAsync();
     }
 
     private static async Task EnsureSourceColumnsAsync(ApplicationDbContext context)
     {
         await EnsureColumnAsync(context, "GuideArticles", "UniversityTag", "varchar(100) NULL DEFAULT NULL");
+        await EnsureColumnAsync(context, "GuideArticles", "CountryTag", "varchar(100) NULL DEFAULT NULL");
         await EnsureColumnAsync(context, "GuideArticles", "SourceName", "varchar(200) NOT NULL DEFAULT ''");
         await EnsureColumnAsync(context, "GuideArticles", "SourceUrl", "varchar(1000) NOT NULL DEFAULT ''");
         await EnsureColumnAsync(context, "GuideArticles", "LastVerifiedAt", "datetime(6) NULL DEFAULT NULL");
@@ -1698,6 +2015,42 @@ public static class DbSeeder
             "Kazakh Students Association in Malaysia" => (
                 "Kazakh Students Association community contact",
                 string.Empty
+            ),
+            "How to Get Your Malaysia Student Visa: The Full Process" => (
+                "Education Malaysia Global Services (EMGS)",
+                "https://visa.educationmalaysia.gov.my/guidelines"
+            ),
+            "Malaysia Student Visa Process for Kazakhstan Citizens" => (
+                "Embassy of Kazakhstan in Malaysia",
+                "https://www.gov.kz/memleket/entities/mfa-kuala-lumpur?lang=en"
+            ),
+            "Malaysia Student Visa Process for Kyrgyzstan Citizens" => (
+                "Embassy of the Kyrgyz Republic in Malaysia",
+                "https://mfa.gov.kg/en/dm/Embassy-of-the-Kyrgyz-Republic-in-the-Malaysia"
+            ),
+            "Malaysia Student Visa Process for Russia Citizens" => (
+                "Embassy of Russia in Malaysia",
+                "https://malaysia.mid.ru/"
+            ),
+            "Malaysia Student Visa Process for Tajikistan Citizens" => (
+                "Embassy of Tajikistan in Malaysia",
+                "https://www.mfa.tj/en/main/view/1259/embassy-of-the-republic-of-tajikistan-in-malaysia"
+            ),
+            "Malaysia Student Visa Process for Uzbekistan Citizens" => (
+                "Embassy of Uzbekistan in Malaysia",
+                "https://gov.uz/en/mfa/sections/view/52419"
+            ),
+            "Bukit Jalil Food & Discount Spots Near APU" => (
+                "Asia Pacific University (APU) student guide",
+                "https://www.apu.edu.my/guide-new-apu-students"
+            ),
+            "Sunway Pyramid Student Discounts for Sunway University Students" => (
+                "Sunway University — Experience Sunway",
+                "https://sunwayuniversity.edu.my/campus-life"
+            ),
+            "Uzbek Student Community: World Association of Youth Uzbekistan (WAYU)" => (
+                "WAYU Malaysia — Instagram community",
+                "https://www.instagram.com/wayu_malaysia"
             ),
             _ => GetGuideFallbackSource(sectionSlug)
         };
