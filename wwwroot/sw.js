@@ -1,4 +1,4 @@
-const CACHE = 'cisconnect-v1';
+const CACHE = 'cisconnect-v2';
 const PRECACHE = [
   '/',
   '/css/site.css',
@@ -27,16 +27,15 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
 
+  // Network-first: always serve the latest deploy when online, only
+  // fall back to the cache when the network request fails (offline).
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      const fresh = fetch(e.request).then(res => {
-        if (res.ok) {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
-        }
-        return res;
-      });
-      return cached || fresh;
-    })
+    fetch(e.request).then(res => {
+      if (res.ok) {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+      }
+      return res;
+    }).catch(() => caches.match(e.request))
   );
 });

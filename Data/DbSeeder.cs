@@ -144,6 +144,52 @@ public static class DbSeeder
                 MediaAltText = "Graduates celebrating after completing university",
                 PublishedAt = new DateTime(2026, 5, 18),
                 IsHighlighted = true
+            },
+            new()
+            {
+                Title = "Astana Restaurant Brings Kazakh Cuisine to XMUM Campus",
+                Summary = "A dedicated Kazakh food spot is open right on campus at Block B1, G06 — dine-in and takeaway, from midday to late evening.",
+                Content = """
+                    <p>Students who miss home-style Kazakh cooking now have a spot on their own campus: Astana Restaurant, located at Block B1, G06 at Xiamen University Malaysia. It's already mentioned as a go-to CIS-style food option in our Student Food Spots guide, so we're giving it its own shout-out here.</p>
+
+                    <h2>Good to know</h2>
+                    <ul>
+                        <li>Open daily from 12:00 PM to 10:00 PM.</li>
+                        <li>Both dine-in and takeaway are available.</li>
+                        <li>Orders and enquiries go through WhatsApp rather than a walk-up counter, so save the number if you plan to order ahead.</li>
+                    </ul>
+
+                    <p>For students craving plov, shashlik, or other familiar dishes without leaving campus, this is worth adding to the regular rotation alongside the other B1 food spots.</p>
+                    """,
+                Category = "Culture",
+                MediaType = "image",
+                MediaUrl = "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80",
+                MediaAltText = "Skewers of grilled meat and vegetables served on flatbread, Central Asian style",
+                PublishedAt = new DateTime(2026, 7, 4),
+                IsHighlighted = false
+            },
+            new()
+            {
+                Title = "Uzbekistan Youth Day Brings Together Students Across Malaysia",
+                Summary = "The Embassy of Uzbekistan and WAYU marked Youth Day with students from APU, XMUM, UCSI, and other universities.",
+                Content = """
+                    <p>On 30 June 2026, the Embassy of Uzbekistan in Kuala Lumpur, together with the World Association of Youth of Uzbekistan (WAYU), held an event marking Uzbekistan's Youth Day. It brought together Uzbek students from across Malaysia, including those from University of Malaya, Asia Pacific University (APU), City University Malaysia, University of Cyberjaya, UCSI University, INCEIF University, INTI International University, and Xiamen University Malaysia (XMUM).</p>
+
+                    <h2>What happened</h2>
+                    <ul>
+                        <li>Embassy representatives spoke about Uzbekistan's youth policy priorities and the support measures available to students studying abroad.</li>
+                        <li>Several students received letters of appreciation from the Embassy and WAYU for active participation in embassy events and strong academic results over the year.</li>
+                        <li>The embassy noted that the number of Uzbek students in Malaysia has grown to more than 1,000.</li>
+                    </ul>
+
+                    <p>Events like this are a good reminder that WAYU is active well beyond casual meetups — see our CIS Community guide for how to follow and join in.</p>
+                    """,
+                Category = "Events",
+                MediaType = "image",
+                MediaUrl = "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80",
+                MediaAltText = "Students seated at a community event listening to a speaker on stage",
+                PublishedAt = new DateTime(2026, 7, 1),
+                IsHighlighted = true
             }
         };
 
@@ -603,6 +649,14 @@ public static class DbSeeder
             "Before You Go: Social Rules That May Feel Different" => (
                 "YouTube cultural explainer video",
                 "https://youtu.be/R0rII81X9do"
+            ),
+            "Astana Restaurant Brings Kazakh Cuisine to XMUM Campus" => (
+                "Astana Xiamen — Instagram",
+                "https://www.instagram.com/astana_xiamen/"
+            ),
+            "Uzbekistan Youth Day Brings Together Students Across Malaysia" => (
+                "Embassy of Uzbekistan in Kuala Lumpur / WAYU",
+                "https://dunyo.info/en/daty/v-malayzii-otmetili-den-molodyozhi-uzbekistana-kulturno-prosvetitelskim"
             ),
             _ => (
                 "CIS Connect demo content",
