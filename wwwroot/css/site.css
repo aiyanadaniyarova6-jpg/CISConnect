@@ -1025,6 +1025,7 @@ main { flex: 1; }
 .feed {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  align-items: start;
   gap: 28px 24px;
 }
 

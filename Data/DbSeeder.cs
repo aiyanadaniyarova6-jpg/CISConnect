@@ -190,6 +190,29 @@ public static class DbSeeder
                 MediaAltText = "Students seated at a community event listening to a speaker on stage",
                 PublishedAt = new DateTime(2026, 7, 1),
                 IsHighlighted = true
+            },
+            new()
+            {
+                Title = "XMUM Marked Its First Nauryz With Music, Games, and Dance",
+                Summary = "The XMUM CIS Community held the university's first Nauryz celebration, the Central Asian spring festival, with embassy guests attending.",
+                Content = """
+                    <p>In April 2025, the XMUM CIS Community organized the university's first-ever celebration of Nauryz — the Central Asian spring festival marking the arrival of spring and a new year, widely celebrated across Kazakhstan, Kyrgyzstan, Tajikistan, Uzbekistan, and beyond.</p>
+
+                    <h2>What happened</h2>
+                    <ul>
+                        <li>The evening event was held at B1-114 and brought together students from Kazakhstan, Uzbekistan, Tajikistan, and other Central Asian countries.</li>
+                        <li>Students showcased the region's culture through traditional games, music, and dance performances.</li>
+                        <li>The celebration was attended by several diplomatic guests, including Mr. Kyran Orynbekov, Counsellor at the Embassy of Kazakhstan; H.E. Mr. Anvar Anarbaev, Ambassador of the Kyrgyz Republic to Malaysia; and Mr. Tugral Khayrulloev, Consul at the Embassy of Tajikistan.</li>
+                    </ul>
+
+                    <p>If your campus doesn't already have a Nauryz celebration, it's worth asking your local CIS Community or student association whether one is being planned — events like XMUM's inaugural one tend to grow year over year once someone starts organizing.</p>
+                    """,
+                Category = "Culture",
+                MediaType = "image",
+                MediaUrl = "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=1200&q=80",
+                MediaAltText = "A dancer mid-performance under stage lighting",
+                PublishedAt = new DateTime(2026, 6, 28),
+                IsHighlighted = false
             }
         };
 
@@ -657,6 +680,10 @@ public static class DbSeeder
             "Uzbekistan Youth Day Brings Together Students Across Malaysia" => (
                 "Embassy of Uzbekistan in Kuala Lumpur / WAYU",
                 "https://dunyo.info/en/daty/v-malayzii-otmetili-den-molodyozhi-uzbekistana-kulturno-prosvetitelskim"
+            ),
+            "XMUM Marked Its First Nauryz With Music, Games, and Dance" => (
+                "Xiamen University Malaysia — News",
+                "https://www.xmu.edu.my/2025/0423/c16257a492128/page.htm"
             ),
             _ => (
                 "CIS Connect demo content",
