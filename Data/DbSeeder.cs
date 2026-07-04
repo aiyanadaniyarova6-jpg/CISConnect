@@ -1439,10 +1439,15 @@ public static class DbSeeder
                 UniversityTag = "XMUM",
                 Content = """
                     <div class="article-video-block">
-                        <video controls preload="metadata" playsinline>
-                            <source src="/media/posts/videos/arrival-first-needs-faq.mov" type="video/quicktime" />
-                            Your browser does not support this video format.
-                        </video>
+                        <iframe
+                            class="post-media-youtube"
+                            src="https://www.youtube-nocookie.com/embed/4qgBXPA81WM"
+                            title="First-Week Essentials: Where to Go After Arrival"
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
                     </div>
 
                     <p>This XMUM-specific arrival guide is for students who have just reached Xiamen University Malaysia and need practical first-week help. It focuses on the places that matter immediately: where to eat, where to withdraw cash, where to buy basic items, where to get a SIM card, and where to go if medical support is needed.</p>
@@ -1515,10 +1520,15 @@ public static class DbSeeder
                 UniversityTag = "XMUM",
                 Content = """
                     <div class="article-video-block">
-                        <video controls preload="metadata" playsinline>
-                            <source src="/media/posts/videos/student-food-spots.mov" type="video/quicktime" />
-                            Your browser does not support this video format.
-                        </video>
+                        <iframe
+                            class="post-media-youtube"
+                            src="https://www.youtube-nocookie.com/embed/aP5MQSGOUY0"
+                            title="Student Food Spots: D6, LY3, Lake Cafe, and B1"
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
                     </div>
 
                     <p>This XMUM food-focused guide helps students quickly understand where they can eat around campus and nearby student areas. It is especially useful when you are new, tired after classes, or simply trying to find familiar food options.</p>
