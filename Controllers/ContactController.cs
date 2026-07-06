@@ -42,6 +42,7 @@ public class ContactController : Controller
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to send contact form email");
+            Console.Error.WriteLine($"EMAIL ERROR: {ex.GetType().Name}: {ex.Message}");
             TempData["ContactError"] = true;
         }
 
