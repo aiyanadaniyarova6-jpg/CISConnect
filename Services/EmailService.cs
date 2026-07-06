@@ -12,10 +12,12 @@ public interface IEmailService
 public class EmailService : IEmailService
 {
     private readonly IConfiguration _config;
+    private readonly ILogger<EmailService> _logger;
 
-    public EmailService(IConfiguration config)
+    public EmailService(IConfiguration config, ILogger<EmailService> logger)
     {
         _config = config;
+        _logger = logger;
     }
 
     public async Task SendContactFormAsync(string fromName, string fromEmail, string subject, string message)
@@ -25,6 +27,9 @@ public class EmailService : IEmailService
         var smtpUser = _config["Email:SmtpUser"] ?? string.Empty;
         var smtpPass = _config["Email:SmtpPass"] ?? string.Empty;
         var toEmail  = _config["Email:ToAddress"] ?? smtpUser;
+
+        _logger.LogInformation("Sending email: host={Host} port={Port} user={User} to={To}",
+            smtpHost, smtpPort, smtpUser, toEmail);
 
         var email = new MimeMessage();
         email.From.Add(new MailboxAddress("CIS Connect", smtpUser));
@@ -41,5 +46,7 @@ public class EmailService : IEmailService
         await smtp.AuthenticateAsync(smtpUser, smtpPass);
         await smtp.SendAsync(email);
         await smtp.DisconnectAsync(true);
+
+        _logger.LogInformation("Email sent successfully to {To}", toEmail);
     }
 }
