@@ -7,10 +7,12 @@ namespace CISConnect.Controllers;
 public class ContactController : Controller
 {
     private readonly IEmailService _email;
+    private readonly ILogger<ContactController> _logger;
 
-    public ContactController(IEmailService email)
+    public ContactController(IEmailService email, ILogger<ContactController> logger)
     {
         _email = email;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -37,8 +39,9 @@ public class ContactController : Controller
             await _email.SendContactFormAsync(model.Name, model.Email, model.Subject, model.Message);
             TempData["ContactSent"] = true;
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Failed to send contact form email");
             TempData["ContactError"] = true;
         }
 
