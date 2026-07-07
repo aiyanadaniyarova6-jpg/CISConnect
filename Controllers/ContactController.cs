@@ -31,7 +31,7 @@ public class ContactController : Controller
         if (!ModelState.IsValid)
         {
             TempData["ContactError"] = true;
-            return RedirectToAction("About", "Home");
+            return RedirectBack(model.ReturnUrl);
         }
 
         try
@@ -44,6 +44,16 @@ public class ContactController : Controller
             _logger.LogError(ex, "Failed to send contact form email");
             Console.Error.WriteLine($"EMAIL ERROR: {ex.GetType().Name}: {ex.Message}");
             TempData["ContactError"] = true;
+        }
+
+        return RedirectBack(model.ReturnUrl);
+    }
+
+    private IActionResult RedirectBack(string? returnUrl)
+    {
+        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+        {
+            return Redirect(returnUrl);
         }
 
         return RedirectToAction("About", "Home");

@@ -152,6 +152,7 @@
             }
             <form action="/Contact" method="post" style="display:flex;flex-direction:column;gap:16px;">
                 @Html.AntiForgeryToken()
+                <input type="hidden" name="ReturnUrl" value="@Context.Request.Path" />
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                     <div>
                         <label style="display:block;font-size:12px;font-family:var(--font-mono);color:var(--ink-500);margin-bottom:6px;letter-spacing:0.05em;text-transform:uppercase;">Your name</label>

@@ -23,4 +23,6 @@ public class ContactViewModel
 
     public bool Sent { get; set; }
     public bool Error { get; set; }
+
+    public string? ReturnUrl { get; set; }
 }
