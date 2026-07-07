@@ -42,6 +42,7 @@ public class EmailService : IEmailService
         };
 
         using var smtp = new SmtpClient();
+        smtp.Timeout = 15000; // 15s — fail fast instead of hanging if the port is blocked
         await smtp.ConnectAsync(smtpHost, smtpPort, SecureSocketOptions.StartTls);
         await smtp.AuthenticateAsync(smtpUser, smtpPass);
         await smtp.SendAsync(email);
