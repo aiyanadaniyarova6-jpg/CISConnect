@@ -11,12 +11,6 @@ public class HomeController : Controller
         return View();
     }
 
-    // TEMP: throws on purpose to verify Sentry error tracking in production. Remove after testing.
-    public IActionResult SentryTest()
-    {
-        throw new Exception("Sentry test error — verifying production error tracking.");
-    }
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error(int? statusCode = null)
     {
