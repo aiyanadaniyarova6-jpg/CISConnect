@@ -1,5 +1,5 @@
 /* =============================================================
-   CIS Connect — Tropical Editorial JS
+   CIS Connect - Tropical Editorial JS
    Sticky-shrink navbar · Parallax hero · Scroll reveals
    Marquee · Horizontal pin · FAQ accordion · Cursor · Magnetic
    ============================================================= */
@@ -1058,7 +1058,7 @@
       { dx: -2.8, dy: -0.2, rot:  215, size: 0.32, delay: 0.28 }, // left
     ];
 
-    // overlay div inside hero, behind content — overflow visible so upward petals show
+    // overlay div inside hero, behind content - overflow visible so upward petals show
     var petalLayer = document.createElement('div');
     petalLayer.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;overflow:visible;';
     heroEl.insertBefore(petalLayer, heroEl.firstChild);
@@ -1164,7 +1164,7 @@
       document.head.appendChild(ks);
     }
 
-    // SVG overlay — paths render inside it, cursor moves control points via JS
+    // SVG overlay - paths render inside it, cursor moves control points via JS
     var svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('preserveAspectRatio', 'none');
@@ -1174,7 +1174,7 @@
     var container = section.querySelector('.container');
     if (container) container.style.position = 'relative';
 
-    // 10 path definitions — varied y positions, curve directions, visual weight
+    // 10 path definitions - varied y positions, curve directions, visual weight
     // cpFlip: which way the S-curve bends; cpMag: how wide the curve is
     var ROUTES = [
       { sy: 0.06, ey: 0.94, cpFlip:  1, cpMag: 0.32, sw: 1.8, op: 0.20, dur: 16, delay:  0   },
@@ -1239,7 +1239,7 @@
       rebuildPaths();
     }
 
-    // Cursor tracking — lerp mx/my then update SVG path shapes
+    // Cursor tracking - lerp mx/my then update SVG path shapes
     function lerpTick() {
       var dx = tmx - mx, dy = tmy - my;
       mx += dx * 0.055;
@@ -1513,7 +1513,7 @@
     }
   }());
 
-  /* ── Display Cards — click to bring card forward ─────────────────── */
+  /* ── Display Cards - click to bring card forward ─────────────────── */
   (function () {
     var cards = document.querySelectorAll('.dc-card');
     if (!cards.length) return;

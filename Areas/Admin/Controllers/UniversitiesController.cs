@@ -93,7 +93,7 @@ public class UniversitiesController : Controller
     {
         var uni = await _db.Universities.FindAsync(universityId);
         if (uni is null) return NotFound();
-        ViewData["Title"] = $"Add Section — {uni.Name}";
+        ViewData["Title"] = $"Add Section - {uni.Name}";
         ViewBag.UniversityName = uni.Name;
         return View(new UniversitySection { UniversityId = universityId });
     }
@@ -105,7 +105,7 @@ public class UniversitiesController : Controller
         if (!ModelState.IsValid)
         {
             var uni = await _db.Universities.FindAsync(section.UniversityId);
-            ViewData["Title"] = $"Add Section — {uni?.Name}";
+            ViewData["Title"] = $"Add Section - {uni?.Name}";
             ViewBag.UniversityName = uni?.Name;
             return View(section);
         }

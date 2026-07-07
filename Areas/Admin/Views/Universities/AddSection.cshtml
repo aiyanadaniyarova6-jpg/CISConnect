@@ -38,7 +38,7 @@
                 <div class="admin-field">
                     <label class="admin-label" asp-for="SectionType">Section type <span class="admin-required">*</span></label>
                     <select class="admin-input admin-select" asp-for="SectionType">
-                        <option value="">— select —</option>
+                        <option value="">- select -</option>
                         @foreach (var t in new[] { "Overview", "Fees", "Housing", "Contacts", "Student Life", "Academic", "Visa", "Other" })
                         {
                             <option value="@t">@t</option>

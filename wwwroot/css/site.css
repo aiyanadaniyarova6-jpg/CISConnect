@@ -1,12 +1,12 @@
 /* ==========================================================================
-   CIS Connect — Tropical Editorial Design System
+   CIS Connect - Tropical Editorial Design System
    Palette: navy #1e3a8a · beige #f3ecdf · hibiscus #c2410c · leaf #15803d
    Fonts: Cormorant Garamond (display) · Newsreader (body) · Martian Mono (mono)
    ========================================================================== */
 
 /* ── 0. ACCESSIBILITY ─────────────────────────────────────────────────────── */
 
-/* Skip link — visible only on keyboard focus */
+/* Skip link - visible only on keyboard focus */
 .skip-link {
   position: absolute;
   top: -100px;
@@ -27,7 +27,7 @@
   outline-offset: 2px;
 }
 
-/* Global focus-visible ring — replaces outline:none pattern */
+/* Global focus-visible ring - replaces outline:none pattern */
 :focus-visible {
   outline: 2px solid var(--hibiscus, #c2410c);
   outline-offset: 3px;
@@ -442,7 +442,7 @@ h1, h2, h3, h4 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   flex-direction: initial;
 }
-/* Hover handled by JS with delay — only keep focus-within for keyboard nav */
+/* Hover handled by JS with delay - only keep focus-within for keyboard nav */
 .nav-dropdown-wrap:focus-within .nav-dropdown-menu,
 .nav-dropdown-wrap.open .nav-dropdown-menu {
   display: flex;
@@ -844,7 +844,7 @@ main { flex: 1; }
   .hero-sub { grid-template-columns: 1fr; gap: 24px; margin-top: 32px; }
   .hero-sub .stats { justify-content: flex-start; flex-wrap: wrap; gap: 20px; }
   .hero-mark, .hero-meta { display: none; }
-  .hero-scroll { display: none; }        /* hides "SCROLL" — overlaps stats on small screens */
+  .hero-scroll { display: none; }        /* hides "SCROLL" - overlaps stats on small screens */
   /* Flower: smaller and less intrusive */
   .hero-flower { width: min(55vw, 260px); height: min(55vw, 260px); right: -6%; top: 45%; }
 }
@@ -910,7 +910,7 @@ main { flex: 1; }
   /* Pages that use .section as their first content block need nav clearance */
   .faq-section,
   .updates-section { padding-top: 110px; }
-  /* Title scale — prevent it from overflowing the viewport top */
+  /* Title scale - prevent it from overflowing the viewport top */
   .section-title { font-size: clamp(38px, 11vw, 72px); }
 }
 
@@ -2328,7 +2328,7 @@ main { flex: 1; }
 .post-detail .hero-image.hero-youtube {
   position: relative;
   padding-top: 0;
-  padding-bottom: 56.25%;   /* pure 16:9 — inset applied via iframe on desktop only */
+  padding-bottom: 56.25%;   /* pure 16:9 - inset applied via iframe on desktop only */
   height: 0;
   overflow: hidden;
   border-radius: 28px;
@@ -3082,7 +3082,7 @@ main { flex: 1; }
   color: var(--ink-700);
 }
 
-/* Embassy toggle button — only visible on mobile */
+/* Embassy toggle button - only visible on mobile */
 .country-hub-toggle {
   display: none;
   align-items: center;
@@ -3123,7 +3123,7 @@ main { flex: 1; }
 }
 
 @media (max-width: 700px) {
-  /* Keep inline-search in one row — never stack input + button */
+  /* Keep inline-search in one row - never stack input + button */
   .search-panel,
   .country-hub-head {
     grid-template-columns: 1fr;
@@ -3169,7 +3169,7 @@ main { flex: 1; }
 }
 .footer-massive em { color: var(--hibiscus); font-style: italic; }
 
-/* Cycling word — replaces "CIS" in the footer massive block */
+/* Cycling word - replaces "CIS" in the footer massive block */
 .footer-cycle-wrap {
   display: inline-block;
   overflow: hidden;
@@ -3260,7 +3260,7 @@ main { flex: 1; }
 /* ── 19. HIBISCUS SVG ANIMATIONS ──────────────────────────────────────────── */
 .hibiscus-svg { overflow: visible; }
 
-/* Hero flower parallax is driven by JS — no competing CSS animation */
+/* Hero flower parallax is driven by JS - no competing CSS animation */
 .hero-flower .hibiscus-svg {
   /* static, parallax via JS only */
 }
@@ -3308,7 +3308,7 @@ main { flex: 1; }
 }
 .contacts-circle-svg {
   position: absolute;
-  /* JS (fitCircle) sets exact px size — CSS just provides fallback position */
+  /* JS (fitCircle) sets exact px size - CSS just provides fallback position */
   left: -28px;
   top: -18px;
   max-width: none !important;
@@ -3632,11 +3632,11 @@ main { flex: 1; }
 .accordion-button:not(.collapsed) { background: rgba(194,65,12,0.05) !important; color: var(--hibiscus) !important; }
 .accordion-button:focus { box-shadow: none !important; }
 
-/* Page transitions — body starts visible (no opacity trick needed) */
+/* Page transitions - body starts visible (no opacity trick needed) */
 body { opacity: 1; transform: none; }
 
 /* ── ABOUT PAGE ───────────────────────────────────────────────────────────── */
-/* ── Display Cards (About page) — port of display-cards.tsx ─────── */
+/* ── Display Cards (About page) - port of display-cards.tsx ─────── */
 .dc-wrap {
   display: flex;
   justify-content: center;
@@ -4476,7 +4476,7 @@ body { opacity: 1; transform: none; }
 .search-result-head p { margin-top: 4px; font-size: 15px; color: var(--ink-700); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ANIMATION ELEVATION — June 2026
+   ANIMATION ELEVATION - June 2026
    Page transitions · Scroll bar · Cursor trail · Card stagger · Counter
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -4549,7 +4549,7 @@ body { opacity: 1; transform: none; }
   .section-motif .hibiscus-svg { animation: none !important; }
   #cursorTrail { display: none !important; }
   #scrollProgressBar { display: none !important; }
-  /* Immersive section — skip animation, show static centered video */
+  /* Immersive section - skip animation, show static centered video */
   .imm-media  { width: min(82vw, 900px) !important; height: min(46vw, 500px) !important; border-radius: 14px !important; }
   .imm-media iframe { width: 100% !important; height: 100% !important; top: 0 !important; left: 0 !important; }
   .imm-title  { display: none; }
@@ -4719,7 +4719,7 @@ body { opacity: 1; transform: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   MOBILE — systematic pass
+   MOBILE - systematic pass
    Breakpoints used: 760px · 640px · 540px · 390px
    Strategy: hide decorative extras, tighten spacing, ensure 44px tap
    targets, prevent horizontal overflow, scale typography fluidly.
@@ -4759,7 +4759,7 @@ body { overflow-x: hidden; }
 .feed.expanded .post { display: flex !important; }
 .feed.expanded + .feed-show-more { display: none; }
 
-/* ── 760px — phones and small tablets ─────────────────────────────── */
+/* ── 760px - phones and small tablets ─────────────────────────────── */
 @media (max-width: 760px) {
 
   /* Container breathing room */
@@ -4783,7 +4783,7 @@ body { overflow-x: hidden; }
   .guide-title { font-size: clamp(38px, 10vw, 80px); margin-top: 10px; }
   .guide-header { padding-bottom: 24px; }
 
-  /* ── About hibiscus — pull back in-bounds ─── */
+  /* ── About hibiscus - pull back in-bounds ─── */
   .utility-hero > [aria-hidden="true"] {
     right: -40px !important;
     width: 160px !important;
@@ -4806,7 +4806,7 @@ body { overflow-x: hidden; }
   .country-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
 
   /* ── Footer ─── */
-  /* Prevent cycling word overflow — scale the massive block down */
+  /* Prevent cycling word overflow - scale the massive block down */
   .footer-massive {
     font-size: clamp(52px, 15vw, 110px);
     margin-bottom: 48px;
@@ -4815,7 +4815,7 @@ body { overflow-x: hidden; }
   /* Cycle wrap: switch to block so it flows normally on narrow screens */
   .footer-cycle-wrap { display: block; max-width: 100%; }
   .footer-cycle-word { font-size: clamp(44px, 14vw, 96px); }
-  /* <br> after the block cycle-wrap is now redundant — it adds an extra blank line */
+  /* <br> after the block cycle-wrap is now redundant - it adds an extra blank line */
   .footer-massive br { display: none; }
 
   /* Footer grid: 2 col → already set; keep. Fix bottom bar. */
@@ -4886,10 +4886,10 @@ body { overflow-x: hidden; }
   .inline-search input { padding: 10px 14px; font-size: 15px; }
   .inline-search button { padding: 10px 16px; font-size: 14px; }
 
-  /* ── Decorative motifs already hidden at 760px — keep ─── */
+  /* ── Decorative motifs already hidden at 760px - keep ─── */
 }
 
-/* ── 640px — typical phones ───────────────────────────────────────── */
+/* ── 640px - typical phones ───────────────────────────────────────── */
 @media (max-width: 640px) {
 
   /* ── Typography scale ─── */
@@ -4933,20 +4933,20 @@ body { overflow-x: hidden; }
   .about-contact-item { gap: 6px; }
 }
 
-/* ── 540px — small phones ─────────────────────────────────────────── */
+/* ── 540px - small phones ─────────────────────────────────────────── */
 @media (max-width: 540px) {
 
   /* ── Hero ─── */
   .hero { padding: 120px var(--gutter) 52px; }
   .hero-headline { font-size: clamp(36px, 11vw, 60px); }
-  /* Hide hero decorative right-column (marks, meta) — already hidden at 760px */
+  /* Hide hero decorative right-column (marks, meta) - already hidden at 760px */
 
   /* ── Footer: single column ─── */
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .footer-massive { font-size: clamp(40px, 13vw, 80px); margin-bottom: 36px; }
   .footer-cycle-word { font-size: clamp(36px, 12vw, 72px); }
 
-  /* ── About hibiscus — fully hide ─── */
+  /* ── About hibiscus - fully hide ─── */
   .utility-hero > [aria-hidden="true"] { display: none !important; }
 
   /* ── Country grid: one column ─── */
@@ -4967,7 +4967,7 @@ body { overflow-x: hidden; }
   .about-contact h2 { font-size: clamp(22px, 7vw, 34px); }
 }
 
-/* ── 390px — small phones (iPhone mini / SE) ──────────────────────── */
+/* ── 390px - small phones (iPhone mini / SE) ──────────────────────── */
 @media (max-width: 390px) {
 
   .container { padding-left: 16px; padding-right: 16px; }
@@ -4991,7 +4991,7 @@ body { overflow-x: hidden; }
   .footer-cycle-word { font-size: clamp(32px, 11vw, 56px); }
 }
 
-/* ── 375px — smallest phones (iPhone SE, budget Android) ─────────────────── */
+/* ── 375px - smallest phones (iPhone SE, budget Android) ─────────────────── */
 @media (max-width: 390px) {
   /* Prevent any element from causing horizontal scroll */
   body { overflow-x: hidden; }
@@ -5006,13 +5006,13 @@ body { overflow-x: hidden; }
   form[action="/Contact"] .contact-grid,
   form div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
 
-  /* University compare — don't shrink below readable */
+  /* University compare - don't shrink below readable */
   .checklist-grid { grid-template-columns: 1fr !important; }
 
   /* Section title font clamp floor */
   .section-title { font-size: clamp(36px, 12vw, 64px); }
 
-  /* Inline search — stack on very small screens */
+  /* Inline search - stack on very small screens */
   .inline-search { grid-template-columns: 1fr; border-radius: 16px; }
   .inline-search button { border-radius: 12px; }
 }

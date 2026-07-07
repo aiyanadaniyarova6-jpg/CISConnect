@@ -32,8 +32,8 @@
                             <span class="admin-td-sub">@(g.Summary.Length > 80 ? g.Summary[..80] + "…" : g.Summary)</span>
                         }
                     </td>
-                    <td><span class="admin-badge">@(g.MenuSection?.Name ?? "—")</span></td>
-                    <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(g.UniversityTag) ? "—" : g.UniversityTag)</td>
+                    <td><span class="admin-badge">@(g.MenuSection?.Name ?? "-")</span></td>
+                    <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(g.UniversityTag) ? "-" : g.UniversityTag)</td>
                     <td class="admin-td-mono">@g.CreatedAt.ToString("dd MMM yyyy")</td>
                     <td class="admin-td-actions">
                         <a class="admin-action-link" asp-area="Admin" asp-controller="Guides" asp-action="Edit" asp-route-id="@g.Id">Edit</a>

@@ -92,7 +92,7 @@
                                 <span class="admin-td-name">@s.Title</span>
                             </td>
                             <td><span class="admin-badge">@s.SectionType</span></td>
-                            <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(s.SourceName) ? "—" : s.SourceName)</td>
+                            <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(s.SourceName) ? "-" : s.SourceName)</td>
                             <td class="admin-td-actions">
                                 <form action="/admin/universities/delete-section" method="post" class="admin-inline-form"
                                       onsubmit="return confirm('Delete section «@s.Title»?')">

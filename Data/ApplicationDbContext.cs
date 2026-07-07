@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CISConnect.Data;
 
-// Main database context — extends Identity so admin users share the same DB.
+// Main database context - extends Identity so admin users share the same DB.
 public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IDataProtectionKeyContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -23,7 +23,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IDataProtec
     public DbSet<FAQItem> FAQItems => Set<FAQItem>();
     public DbSet<ContactItem> ContactItems => Set<ContactItem>();
 
-    // Column length limits for MySQL — prevents "row too large" errors on older engines.
+    // Column length limits for MySQL - prevents "row too large" errors on older engines.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

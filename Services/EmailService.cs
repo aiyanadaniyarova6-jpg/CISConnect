@@ -26,7 +26,7 @@ public class EmailService : IEmailService
 
     public async Task SendContactFormAsync(string fromName, string fromEmail, string subject, string message)
     {
-        // Prefer Resend (HTTP API, port 443) — works on hosts that block SMTP. Falls back to SMTP locally.
+        // Prefer Resend (HTTP API, port 443) - works on hosts that block SMTP. Falls back to SMTP locally.
         var resendKey = _config["Resend:ApiKey"];
         if (!string.IsNullOrWhiteSpace(resendKey))
         {
@@ -37,7 +37,7 @@ public class EmailService : IEmailService
         await SendViaSmtpAsync(fromName, fromEmail, subject, message);
     }
 
-    // Sends via Resend's HTTP API — used in production (Railway blocks SMTP ports).
+    // Sends via Resend's HTTP API - used in production (Railway blocks SMTP ports).
     private async Task SendViaResendAsync(string apiKey, string fromName, string fromEmail, string subject, string message)
     {
         var toEmail = _config["Email:ToAddress"] ?? _config["Email:SmtpUser"] ?? string.Empty;
@@ -69,7 +69,7 @@ public class EmailService : IEmailService
         _logger.LogInformation("Email sent via Resend to {To}", toEmail);
     }
 
-    // Sends via Gmail SMTP — used locally where port 587 is open.
+    // Sends via Gmail SMTP - used locally where port 587 is open.
     private async Task SendViaSmtpAsync(string fromName, string fromEmail, string subject, string message)
     {
         var smtpHost = _config["Email:SmtpHost"] ?? "smtp.gmail.com";
@@ -92,7 +92,7 @@ public class EmailService : IEmailService
         };
 
         using var smtp = new SmtpClient();
-        smtp.Timeout = 15000; // 15s — fail fast instead of hanging if the port is blocked
+        smtp.Timeout = 15000; // 15s - fail fast instead of hanging if the port is blocked
         await smtp.ConnectAsync(smtpHost, smtpPort, SecureSocketOptions.StartTls);
         await smtp.AuthenticateAsync(smtpUser, smtpPass);
         await smtp.SendAsync(email);

@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        @* ── Display Cards — stacked skewed stack ───────────────────── *@
+        @* ── Display Cards - stacked skewed stack ───────────────────── *@
         <div class="dc-wrap" data-reveal>
             <div class="dc-grid">
 
@@ -63,7 +63,7 @@
                         <span class="dc-num-badge">04</span>
                         <span class="dc-title">How it is built</span>
                     </div>
-                    <p class="dc-desc">Independent — not affiliated, fully verified</p>
+                    <p class="dc-desc">Independent - not affiliated, fully verified</p>
                     <p class="dc-meta">Platform</p>
                 </div>
 
@@ -80,7 +80,7 @@
                     <p>
                         For urgent student issues, refer to the
                         <a asp-controller="Menu" asp-action="Contacts">Important Contacts</a>
-                        page. For platform feedback — write to us directly.
+                        page. For platform feedback - write to us directly.
                     </p>
                 </div>
 
@@ -102,7 +102,7 @@
                 {
                     @if (TempData["ContactError"] != null)
                     {
-                        <div class="acf-error" data-reveal>Something went wrong — please try again.</div>
+                        <div class="acf-error" data-reveal>Something went wrong - please try again.</div>
                     }
 
                     <form class="acf" asp-controller="Contact" asp-action="Index" method="post" data-reveal style="--d:80ms">

@@ -42,7 +42,7 @@
                 <div class="admin-field">
                     <label class="admin-label" asp-for="Category">Category <span class="admin-required">*</span></label>
                     <select class="admin-input admin-select" asp-for="Category">
-                        <option value="">— select —</option>
+                        <option value="">- select -</option>
                         @foreach (var cat in new[] { "Important", "Events", "Guides", "Tips", "Culture", "Community", "Updates" })
                         {
                             <option value="@cat">@cat</option>
@@ -81,7 +81,7 @@
                     <label class="admin-label">Upload image</label>
                     <input type="file" name="imageFile" accept="image/*" class="admin-input" id="imageFileInput"
                            style="padding:8px;cursor:pointer;" />
-                    <p class="admin-hint">JPG, PNG, WebP, GIF, AVIF — max 10 MB. Fills URL automatically.</p>
+                    <p class="admin-hint">JPG, PNG, WebP, GIF, AVIF - max 10 MB. Fills URL automatically.</p>
                     <div id="imagePreviewWrap" style="display:none;margin-top:8px;">
                         <img id="imagePreview" style="max-width:100%;max-height:180px;border-radius:8px;border:1px solid rgba(10,14,31,0.1);" />
                     </div>

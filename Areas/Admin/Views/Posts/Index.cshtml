@@ -42,10 +42,10 @@
                         }
                         else
                         {
-                            <span class="admin-badge admin-badge-muted">—</span>
+                            <span class="admin-badge admin-badge-muted">-</span>
                         }
                     </td>
-                    <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(post.MediaType) ? "—" : post.MediaType)</td>
+                    <td class="admin-td-mono">@(string.IsNullOrWhiteSpace(post.MediaType) ? "-" : post.MediaType)</td>
                     <td class="admin-td-actions">
                         <a class="admin-action-link" asp-area="Admin" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
                         <form action="/admin/posts/delete" method="post" class="admin-inline-form">

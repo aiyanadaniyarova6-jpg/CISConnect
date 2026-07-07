@@ -24,7 +24,7 @@ Log.Information("Starting CISConnect application");
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
-// Railway assigns a dynamic port via the PORT env var and routes traffic to it —
+// Railway assigns a dynamic port via the PORT env var and routes traffic to it -
 // bind Kestrel to it directly so ASPNETCORE_URLS never needs to be set manually.
 var railwayPort = Environment.GetEnvironmentVariable("PORT");
 if (!string.IsNullOrWhiteSpace(railwayPort))
@@ -51,7 +51,7 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 // Connection string resolved from User Secrets (development) or environment variable (production).
-// Never commit real credentials to appsettings.json — use `dotnet user-secrets set` locally.
+// Never commit real credentials to appsettings.json - use `dotnet user-secrets set` locally.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("DefaultConnection string not found. Set it via User Secrets or an environment variable.");
 
@@ -139,7 +139,7 @@ app.Use(async (ctx, next) =>
     ctx.Response.Headers["X-XSS-Protection"] = "0";
     ctx.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
 
-    // Never cache admin pages — otherwise a redirect after create/edit/delete can be
+    // Never cache admin pages - otherwise a redirect after create/edit/delete can be
     // served from the browser cache without the TempData success/error banner.
     if (ctx.Request.Path.StartsWithSegments("/admin"))
     {

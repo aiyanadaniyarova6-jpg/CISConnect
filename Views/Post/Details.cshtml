@@ -101,7 +101,7 @@
     @* body *@
     <div class="body" data-reading-content>
         @* Html.Raw is intentionally used here. Content is only ever written by the application seeder
-           (DbSeeder.cs) — it is never sourced from user input, form submissions, or external APIs.
+           (DbSeeder.cs) - it is never sourced from user input, form submissions, or external APIs.
            Any future feature that accepts user-supplied content must sanitize before storing. *@
         @if (!string.IsNullOrWhiteSpace(Model.Content) && Model.Content.Contains('<'))
         {
