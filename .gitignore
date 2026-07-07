@@ -17,7 +17,6 @@ wwwroot/media/posts/videos/*.mp4
 ## IDE and tool configs
 .vscode/
 .idea/
-.claude/
 *.user
 
 ## macOS
